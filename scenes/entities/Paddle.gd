@@ -22,6 +22,8 @@ func start():
 		started = true
 		var newBall = BALL.instance()
 		newBall.global_position = self.get_node("StartBall").global_position
+		newBall.current_speed = get_parent().active_speed
+		newBall.linear_velocity.y = -get_parent().active_speed
 		self.get_node("StartBall").visible = false
 		self.get_parent().add_child(newBall)
 

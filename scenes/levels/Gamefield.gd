@@ -10,8 +10,11 @@ var left_offset = 1024
 var top_offset = 200
 
 var generate_mode = 1
-var def_area = Vector2(5,5) #first is RADIUS for row length
+var def_area = Vector2(5,3) #first is RADIUS for row length
 var def_bricks = [Vector2(1,1),Vector2(1,2),Vector2(2,2),Vector2(2,1)]
+var def_speed = 500
+var active_speed = 500
+var max_speed = 2000
 
 export var points = 0
 export var level = 1
@@ -62,6 +65,12 @@ func level_check():
 		level += 1
 		update_level(level)
 		generate_brick_area()
+		for child in self.get_children():
+			if child.is_in_group("Ball"):
+				active_speed = def_speed + (level * def_speed/10)
+				if active_speed > max_speed:
+					active_speed = max_speed
+				child.update_speed(active_speed)
 		#TODO: Make this more dynamic, and progress through levels
 
 func award_points(newPoints):
