@@ -23,6 +23,7 @@ export var lives = 3
 const BRICK = preload("res://scenes/entities/Brick.tscn")
 
 func _ready():
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	if generate_mode == 1:
 		generate_brick_area()
 	elif generate_mode == 2:
