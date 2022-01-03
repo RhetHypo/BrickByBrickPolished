@@ -12,7 +12,7 @@ bounce = 500.0
 [sub_resource type="CircleShape2D" id=2]
 radius = 32.0894
 
-[sub_resource type="Curve" id=4]
+[sub_resource type="Curve" id=3]
 _data = [ Vector2( 0.453924, 93.84 ), 0.0, 0.0, 0, 0, Vector2( 0.684303, 153.9 ), 0.0, 0.0, 0, 0 ]
 
 [node name="Ball" type="RigidBody2D" groups=[
@@ -45,5 +45,5 @@ emission_shape = 1
 emission_sphere_radius = 3.0
 gravity = Vector2( 0, 0 )
 scale_amount_curve = ExtResource( 4 )
-anim_speed_curve = SubResource( 4 )
+anim_speed_curve = SubResource( 3 )
 [connection signal="body_entered" from="." to="." method="_on_Ball_body_entered"]

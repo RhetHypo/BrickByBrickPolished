@@ -30,6 +30,7 @@ func _on_Ball_body_entered(body):
 func death():
 	#TODO: Add check for if this is the last ball in play, if adding multiple balls
 	get_parent().award_lives(-1)
+	get_parent().add_shaking(.25)
 	self.queue_free()
 
 func update_speed(speed):

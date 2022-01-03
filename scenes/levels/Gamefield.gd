@@ -20,7 +20,16 @@ export var points = 0
 export var level = 1
 export var lives = 3
 
+export var decay = .7
+export var max_offset = Vector2(50,25)
+export var max_roll = 0.5
+
+var shaking = 0.0
+var shake_amount = 0.25
+
 const BRICK = preload("res://scenes/entities/Brick.tscn")
+
+onready var camera = get_node("Camera2D")
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
@@ -31,6 +40,20 @@ func _ready():
 	update_points(points)
 	update_level(level)
 	update_lives(lives)
+	
+func _process(delta):
+	if shaking > 0:
+		shaking = max(shaking - decay * delta,0)
+		shake(shaking)
+
+func add_shaking(amount):
+    shaking = min(shaking + amount, 1.0)
+
+func shake(shaking):
+	var amount = pow(shaking, shake_amount)
+	camera.rotation = max_roll * amount * rand_range(-1, 1)
+	camera.offset.x = max_offset.x * amount * rand_range(-1, 1)
+	camera.offset.y = max_offset.y * amount * rand_range(-1, 1)
 
 func generate_brick_area(area = def_area):
 	var newBrick
