@@ -7,6 +7,8 @@ var temp_speed = 0
 var max_temp_speed = 2000
 var paddle_width = 512
 
+var angle_cap = 0.75
+
 func _ready():
 	pass
 
@@ -15,7 +17,16 @@ func _physics_process(delta):
 
 func _integrate_forces(state):
 	if state.linear_velocity.length()!=current_speed+temp_speed:
-        state.linear_velocity=state.linear_velocity.normalized()*(current_speed+temp_speed)
+		state.linear_velocity=state.linear_velocity.normalized()*(current_speed+temp_speed)
+	if pow(state.linear_velocity.x,2) > pow(current_speed+temp_speed,2) * 0.75:
+		if state.linear_velocity.x < 0:
+			state.linear_velocity.x = -sqrt(pow(current_speed+temp_speed,2) * 0.75)
+		else:
+			state.linear_velocity.x = sqrt(pow(current_speed+temp_speed,2) * 0.75)
+		if state.linear_velocity.y < 0:
+			state.linear_velocity.y = -sqrt(pow(current_speed+temp_speed,2) * 0.25)
+		else:
+			state.linear_velocity.y = sqrt(pow(current_speed+temp_speed,2) * 0.25)
 
 func _on_Ball_body_entered(body):
 	if body.is_in_group("Paddle"):
