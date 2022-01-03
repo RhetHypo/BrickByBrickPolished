@@ -10,7 +10,7 @@ var left_offset = 1024
 var top_offset = 200
 
 var generate_mode = 1
-var def_area = Vector2(5,3) #first is RADIUS for row length
+var def_area = Vector2(6,7) #first is RADIUS for row length
 var def_bricks = [Vector2(1,1),Vector2(1,2),Vector2(2,2),Vector2(2,1)]
 var def_speed = 500
 var active_speed = 500
