@@ -21,7 +21,6 @@ config/icon="res://icon.png"
 
 [display]
 
-mouse_cursor/custom_image="res://images/ball.png"
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
 
