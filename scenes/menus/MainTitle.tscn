@@ -8,10 +8,10 @@
 [ext_resource path="res://images/hover.png" type="Texture" id=6]
 [ext_resource path="res://images/disabled.png" type="Texture" id=7]
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 3 )
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=2]
 resource_name = "Buttons"
 length = 2.5
 tracks/0/type = "value"
@@ -90,11 +90,11 @@ tracks/1/keys = {
 "values": [ -15.0, -15.0, 0.0 ]
 }
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=4]
 size = 128
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=5]
 size = 32
 font_data = ExtResource( 3 )
 
@@ -119,11 +119,11 @@ margin_left = 20.0
 margin_top = 20.0
 margin_right = 20.0
 margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 1 )
 text = "The quick brown fox jumps over the lazy dog"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Buttons = SubResource( 5 )
+anims/Buttons = SubResource( 2 )
 anims/Title = SubResource( 3 )
 
 [node name="Label" type="Label" parent="."]
@@ -132,7 +132,7 @@ margin_top = -200.0
 margin_right = 811.0
 margin_bottom = -66.0
 rect_rotation = -15.0218
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 4 )
 text = "BRICK BY BRICK"
 align = 1
 
@@ -146,9 +146,9 @@ margin_top = 325.0
 
 [node name="ButtonGrid" type="GridContainer" parent="CenterContainer"]
 margin_left = 376.0
-margin_top = 79.0
+margin_top = 66.0
 margin_right = 647.0
-margin_bottom = 222.0
+margin_bottom = 209.0
 custom_constants/vseparation = 15
 custom_constants/hseparation = 15
 columns = 2
@@ -165,7 +165,7 @@ texture_disabled = ExtResource( 7 )
 [node name="Label" type="Label" parent="CenterContainer/ButtonGrid/NewGameButton"]
 margin_right = 128.0
 margin_bottom = 64.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "NEW GAME"
 align = 1
@@ -184,7 +184,7 @@ texture_disabled = ExtResource( 7 )
 [node name="Label" type="Label" parent="CenterContainer/ButtonGrid/SettingsButton"]
 margin_right = 128.0
 margin_bottom = 64.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "SETTINGS"
 align = 1
@@ -203,7 +203,7 @@ texture_disabled = ExtResource( 7 )
 [node name="Label" type="Label" parent="CenterContainer/ButtonGrid/HighscoresButton"]
 margin_right = 128.0
 margin_bottom = 64.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "HIGHSCORES"
 align = 1
@@ -223,7 +223,7 @@ texture_disabled = ExtResource( 7 )
 [node name="Label" type="Label" parent="CenterContainer/ButtonGrid/Quit"]
 margin_right = 128.0
 margin_bottom = 65.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "QUIT"
 align = 1
