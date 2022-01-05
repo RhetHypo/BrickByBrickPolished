@@ -40,6 +40,8 @@ func _ready():
 	update_points(points)
 	update_level(level)
 	update_lives(lives)
+	settings.load_settings()
+	init_settings()
 
 func _unhandled_input(event):
 	if event.is_action_pressed("pause"):
@@ -123,6 +125,64 @@ func _on_CompleteCheck_timeout():
 func pause_game():
 	get_node("Camera2D/CanvasLayer/PauseDialog").popup_centered()
 	get_tree().paused = true
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 func _on_PauseDialog_popup_hide():
 	get_tree().paused = false
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+
+func init_settings():
+	get_node("Camera2D/CanvasLayer/PauseDialog/MarginContainer/VBoxContainer/DifficultyOptions").visible = false
+	update_settings()
+
+func update_settings():
+	var pause_settings = get_node("Camera2D/CanvasLayer/PauseDialog/MarginContainer/VBoxContainer")
+	pause_settings.get_node("Music").pressed = settings.music_enabled
+	pause_settings.get_node("MusicHSlider").value = settings.music_level
+	pause_settings.get_node("Sound").pressed = settings.sound_enabled
+	pause_settings.get_node("SoundHSlider").value = settings.sound_level
+	pause_settings.get_node("ControlOptions").selected = settings.control_scheme
+	pause_settings.get_node("GraphicsOptions").selected = settings.graphics
+	pause_settings.get_node("DifficultyOptions").selected = settings.difficulty
+	settings.save_settings()
+
+func _on_Music_pressed():
+	settings.music_enabled = !settings.music_enabled
+	update_settings()
+
+
+func _on_MusicHSlider_value_changed(value):
+	settings.music_level = value
+	if value > 0:
+		settings.music_enabled = true
+	else:
+		settings.music_enabled = false
+	update_settings()
+
+
+func _on_Sound_pressed():
+	settings.sound_enabled = !settings.sound_enabled
+	update_settings()
+
+
+func _on_SoundHSlider_value_changed(value):
+	settings.sound_level = value
+	if value > 0:
+		settings.sound_enabled = true
+	else:
+		settings.sound_enabled = false
+	update_settings()
+
+func _on_ControlOptions_item_selected(ID):
+	settings.control_scheme = ID
+	update_settings()
+
+
+func _on_GraphicsOptions_item_selected(ID):
+	settings.graphics = ID
+	update_settings()
+
+
+func _on_DifficultyOptions_item_selected(ID):
+	settings.difficulty = ID
+	update_settings()
