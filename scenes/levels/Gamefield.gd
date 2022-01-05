@@ -40,7 +40,11 @@ func _ready():
 	update_points(points)
 	update_level(level)
 	update_lives(lives)
-	
+
+func _unhandled_input(event):
+	if event.is_action_pressed("pause"):
+		pause_game()
+
 func _process(delta):
 	if shaking > 0:
 		shaking = max(shaking - decay * delta,0)
@@ -115,3 +119,10 @@ func update_level(newLevel):
 
 func _on_CompleteCheck_timeout():
 	level_check()
+
+func pause_game():
+	get_node("Camera2D/CanvasLayer/PauseDialog").popup_centered()
+	get_tree().paused = true
+
+func _on_PauseDialog_popup_hide():
+	get_tree().paused = false
