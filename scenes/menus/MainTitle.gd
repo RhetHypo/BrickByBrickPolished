@@ -20,3 +20,7 @@ func _on_DelayTimer_timeout():
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "Title":
 		$AnimationPlayer.play("Buttons")
+
+
+func _on_SettingsButton_pressed():
+	get_node("PauseDialog").popup_centered()

@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="BrickByBrick"
-run/main_scene="res://scenes/levels/Gamefield.tscn"
+run/main_scene="res://scenes/menus/MainTitle.tscn"
 config/icon="res://icon.png"
 
 [autoload]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://other/long_shot/Long_Shot.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://scenes/menus/PauseDialog.gd" type="Script" id=2]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 1 )
@@ -43,6 +44,7 @@ margin_top = -20.0
 margin_right = 230.0
 margin_bottom = 330.0
 theme = SubResource( 2 )
+script = ExtResource( 2 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -123,3 +125,10 @@ text = "EASY"
 align = 1
 items = [ "EASY", null, false, 0, null, "NORMAL", null, false, 1, null, "HARD", null, false, 2, null ]
 selected = 0
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Music" to="." method="_on_Music_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/MusicHSlider" to="." method="_on_MusicHSlider_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Sound" to="." method="_on_Sound_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/SoundHSlider" to="." method="_on_SoundHSlider_value_changed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/ControlOptions" to="." method="_on_ControlOptions_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/GraphicsOptions" to="." method="_on_GraphicsOptions_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/DifficultyOptions" to="." method="_on_DifficultyOptions_item_selected"]
