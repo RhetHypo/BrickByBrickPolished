@@ -38,7 +38,6 @@ func load_settings():
 			else:
 				bad_settings = true
 				break
-		print("SETTINGS VALID: ", bad_settings)
 		if !bad_settings:
 			music_enabled = temp_settings[0]
 			music_level = temp_settings[1]

@@ -117,4 +117,3 @@ wait_time = 0.05
 [connection signal="body_entered" from="Death" to="Death" method="_on_Death_body_entered"]
 [connection signal="popup_hide" from="Camera2D/CanvasLayer/PauseDialog" to="." method="_on_PauseDialog_popup_hide"]
 [connection signal="timeout" from="CompleteCheck" to="." method="_on_CompleteCheck_timeout"]
-[connection signal="timeout" from="PointTimer" to="." method="_on_PointTimer_timeout"]
