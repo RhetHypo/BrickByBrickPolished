@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/menus/MainTitle.gd" type="Script" id=1]
 [ext_resource path="res://images/TitleBackground.png" type="Texture" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://images/hover.png" type="Texture" id=6]
 [ext_resource path="res://images/disabled.png" type="Texture" id=7]
 [ext_resource path="res://scenes/menus/PauseDialog.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/menus/Transition.tscn" type="PackedScene" id=9]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 3 )
@@ -232,6 +233,10 @@ align = 1
 valign = 1
 
 [node name="PauseDialog" parent="." instance=ExtResource( 8 )]
+
+[node name="Transition" parent="." instance=ExtResource( 9 )]
+visible = false
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="DelayTimer" to="." method="_on_DelayTimer_timeout"]
+[connection signal="pressed" from="CenterContainer/ButtonGrid/NewGameButton" to="." method="_on_NewGameButton_pressed"]
 [connection signal="pressed" from="CenterContainer/ButtonGrid/SettingsButton" to="." method="_on_SettingsButton_pressed"]

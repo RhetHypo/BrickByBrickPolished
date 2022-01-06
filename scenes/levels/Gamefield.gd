@@ -42,6 +42,9 @@ func _ready():
 	update_lives(lives)
 	settings.load_settings()
 	init_settings()
+	get_node("Transition").fade_in()
+	yield(get_node("Transition/TransitionTween"), "tween_completed")
+	get_node("Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer").visible = true
 
 func _unhandled_input(event):
 	if event.is_action_pressed("pause"):
@@ -63,10 +66,11 @@ func shake(shaking):
 
 func generate_brick_area(area = def_area):
 	var newBrick
+	var death = get_node("Death")
 	for x in range(-area.x,area.x + 1):
 		for y in range(0,area.y):
 			newBrick = BRICK.instance()
-			self.add_child(newBrick)
+			self.add_child_below_node(death,newBrick)
 			newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
 			newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
 
