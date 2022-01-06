@@ -37,7 +37,7 @@ func _ready():
 		generate_brick_area()
 	elif generate_mode == 2:
 		generate_brick_list()
-	update_points(points)
+	update_points(points, points)
 	update_level(level)
 	update_lives(lives)
 	settings.load_settings()
@@ -105,15 +105,23 @@ func level_check():
 
 func award_points(newPoints):
 	points += newPoints
-	update_points(points)
+	update_points(points, newPoints)
 
 func update_lives(newLives):
 	var lives = get_node("Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Lives")
 	lives.text = "Lives: " + str(newLives)
 
-func update_points(newPoints):
-	var points = get_node("Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Score")
-	points.text = "Points: " + str(newPoints)
+func update_points(points, newPoints):
+	
+	for i in range(points-newPoints, points):
+		get_node("PointTimer").start()
+		yield(get_node("PointTimer"), "timeout")
+		get_node("PointTimer").stop()
+		var display_points = get_node("Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Score")
+		display_points.text = "Points: " + str(i)
+	
+	var display_points = get_node("Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Score")
+	display_points.text = "Points: " + str(points)
 
 func update_level(newLevel):
 	var level = get_node("Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Level")
