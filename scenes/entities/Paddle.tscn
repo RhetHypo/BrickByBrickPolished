@@ -40,7 +40,6 @@ texture = ExtResource( 3 )
 [node name="CPUParticles2D" type="CPUParticles2D" parent="StartBall"]
 amount = 16
 speed_scale = 5.0
-local_coords = false
 texture = ExtResource( 4 )
 emission_shape = 1
 emission_sphere_radius = 3.0

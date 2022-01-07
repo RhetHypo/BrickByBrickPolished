@@ -1,18 +1,39 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/menus/Highscores.gd" type="Script" id=1]
 [ext_resource path="res://images/ScoreBackground.png" type="Texture" id=2]
 [ext_resource path="res://other/long_shot/Long_Shot.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://images/normal.png" type="Texture" id=4]
+[ext_resource path="res://images/pressed.png" type="Texture" id=5]
+[ext_resource path="res://images/hover.png" type="Texture" id=6]
+[ext_resource path="res://images/disabled.png" type="Texture" id=7]
+[ext_resource path="res://images/focused.png" type="Texture" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 size = 72
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 48
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 48
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 32
 font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=4]
 size = 32
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=7]
+size = 32
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=8]
 size = 32
 font_data = ExtResource( 3 )
 
@@ -30,31 +51,92 @@ texture = ExtResource( 2 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -142.0
-margin_top = -255.5
-margin_right = 142.0
-margin_bottom = 255.5
+margin_left = -196.0
+margin_top = 20.0
+margin_right = 196.0
+margin_bottom = 491.0
 alignment = 1
 
 [node name="HighScoresLabel" type="Label" parent="VBoxContainer" groups=[
 "Label",
 ]]
-margin_top = 198.0
-margin_right = 284.0
-margin_bottom = 273.0
+margin_top = 144.0
+margin_right = 392.0
+margin_bottom = 219.0
 custom_fonts/font = SubResource( 1 )
 text = "HIGH SCORES"
 align = 1
 valign = 1
 
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 223.0
+margin_right = 392.0
+margin_bottom = 287.0
+alignment = 1
+
+[node name="Easier" type="TextureButton" parent="VBoxContainer/HBoxContainer"]
+margin_right = 128.0
+margin_bottom = 64.0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 5 )
+texture_hover = ExtResource( 6 )
+texture_disabled = ExtResource( 7 )
+texture_focused = ExtResource( 8 )
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/Easier"]
+margin_right = 127.0
+margin_bottom = 65.0
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "EASY"
+align = 1
+valign = 1
+
+[node name="Medium" type="TextureButton" parent="VBoxContainer/HBoxContainer"]
+margin_left = 132.0
+margin_right = 260.0
+margin_bottom = 64.0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 5 )
+texture_hover = ExtResource( 6 )
+texture_disabled = ExtResource( 7 )
+texture_focused = ExtResource( 8 )
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/Medium"]
+margin_right = 127.0
+margin_bottom = 65.0
+focus_mode = 1
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "MEDIUM"
+align = 1
+valign = 1
+
+[node name="Harder" type="TextureButton" parent="VBoxContainer/HBoxContainer"]
+margin_left = 264.0
+margin_right = 392.0
+margin_bottom = 64.0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 5 )
+texture_hover = ExtResource( 6 )
+texture_disabled = ExtResource( 7 )
+texture_focused = ExtResource( 8 )
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/Harder"]
+margin_right = 130.0
+margin_bottom = 65.0
+custom_fonts/font = SubResource( 6 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "HARD"
+align = 1
+valign = 1
+
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
-margin_top = 277.0
-margin_right = 284.0
-margin_bottom = 312.0
-custom_constants/vseparation = 8
+editor/display_folded = true
+margin_top = 291.0
+margin_right = 392.0
+margin_bottom = 326.0
 custom_constants/hseparation = 32
 columns = 4
 
@@ -68,27 +150,65 @@ margin_bottom = 24.0
 "Label",
 ]]
 margin_left = 32.0
-margin_right = 126.0
+margin_right = 180.0
 margin_bottom = 35.0
 size_flags_horizontal = 3
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 3 )
 text = "NAME"
 align = 2
 
 [node name="Label2" type="Label" parent="VBoxContainer/GridContainer" groups=[
 "Label",
 ]]
-margin_left = 158.0
-margin_right = 252.0
+margin_left = 212.0
+margin_right = 360.0
 margin_bottom = 35.0
 size_flags_horizontal = 3
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 4 )
 text = "SCORE"
 
 [node name="BlankLabel2" type="Label" parent="VBoxContainer/GridContainer" groups=[
 "Label",
 ]]
-margin_left = 284.0
+margin_left = 392.0
 margin_top = 10.0
-margin_right = 284.0
+margin_right = 392.0
 margin_bottom = 24.0
+
+[node name="NewHighscore" type="PopupDialog" parent="."]
+pause_mode = 2
+visible = true
+margin_left = -1.24377
+margin_top = -0.756241
+margin_right = 230.756
+margin_bottom = 127.244
+popup_exclusive = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NewHighscore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -108.0
+margin_top = -42.0
+margin_right = 108.0
+margin_bottom = 42.0
+
+[node name="Label" type="Label" parent="NewHighscore/VBoxContainer"]
+margin_right = 216.0
+margin_bottom = 35.0
+custom_fonts/font = SubResource( 7 )
+text = "ENTER YOUR NAME"
+align = 1
+
+[node name="LineEdit" type="LineEdit" parent="NewHighscore/VBoxContainer"]
+margin_top = 39.0
+margin_right = 216.0
+margin_bottom = 84.0
+custom_fonts/font = SubResource( 8 )
+align = 1
+max_length = 3
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Easier" to="." method="_on_Easier_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Medium" to="." method="_on_Medium_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Harder" to="." method="_on_Harder_pressed"]
+[connection signal="text_entered" from="NewHighscore/VBoxContainer/LineEdit" to="." method="_on_LineEdit_text_entered"]
