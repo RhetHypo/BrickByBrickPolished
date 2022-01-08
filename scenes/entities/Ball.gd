@@ -33,7 +33,8 @@ func _on_Ball_body_entered(body):
 		self.apply_central_impulse(Vector2(current_speed * 2 * (self.position.x - body.position.x)/paddle_width,0))
 	elif body.is_in_group("Brick"):
 		get_parent().award_points(10)
-		temp_speed += 10
+		print("TEMP: ", (settings.difficulty+1)*2)
+		temp_speed += ((settings.difficulty+1)*2)
 		if temp_speed > max_temp_speed:
 			temp_speed = max_temp_speed
 		body.queue_free()
@@ -46,4 +47,3 @@ func death():
 
 func update_speed(speed):
 	current_speed = speed
-	print("CURRENT SPEED: ", str(current_speed+temp_speed))

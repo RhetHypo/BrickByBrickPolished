@@ -7,6 +7,7 @@ extends Control
 func _ready():
 	$DelayTimer.start()
 	get_node("Transition").fade_in()
+	get_node("PauseDialog/MarginContainer/VBoxContainer/QuitToMainButton").visible = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

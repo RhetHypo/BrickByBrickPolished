@@ -56,3 +56,8 @@ func _on_GraphicsOptions_item_selected(ID):
 func _on_DifficultyOptions_item_selected(ID):
 	settings.difficulty = ID
 	update_settings()
+
+
+func _on_QuitToMainButton_pressed():
+	get_tree().paused = false
+	get_parent().get_parent().get_parent().get_node("Transition").switch_scene("res://scenes/menus/MainTitle.tscn")

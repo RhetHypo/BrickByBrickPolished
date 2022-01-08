@@ -72,11 +72,11 @@ func shake(shaking):
 
 func generate_brick_area(area = def_area):
 	var newBrick
-	var death = get_node("Death")
+	var life = get_node("Life")
 	for x in range(-area.x,area.x + 1):
 		for y in range(0,area.y):
 			newBrick = BRICK.instance()
-			self.add_child_below_node(death,newBrick)
+			self.add_child_below_node(life,newBrick)
 			newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
 			newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
 
@@ -99,6 +99,10 @@ func award_lives(newLives):
 		#TODO: Actual game over screen
 
 func level_check():
+	#quick and dirty spedometer
+	for child in self.get_children():
+		if child.is_in_group("Ball"):
+			update_speed_label(child.linear_velocity.length())
 	var complete = true
 	for child in self.get_children():
 		if child.is_in_group("Brick"):
@@ -109,7 +113,8 @@ func level_check():
 		generate_bricks()
 		for child in self.get_children():
 			if child.is_in_group("Ball"):
-				active_speed = def_speed + (level * def_speed/10)
+				print("LEVEL INCREASE: ",def_speed/(15-settings.difficulty*4))
+				active_speed = def_speed + (level * def_speed/(15-settings.difficulty*4))
 				if active_speed > max_speed:
 					active_speed = max_speed
 				child.update_speed(active_speed)
@@ -139,6 +144,10 @@ func update_level(newLevel):
 	var level = get_node("Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Level")
 	level.text = "Level " + str(newLevel)
 
+func update_speed_label(ball_speed):
+	var speed_label = get_node("Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Speed")
+	speed_label.text = "Speed: " + str(ball_speed)
+
 func _on_CompleteCheck_timeout():
 	level_check()
 
@@ -156,7 +165,7 @@ func init_settings():
 
 func generate_brick_shapes(shape, area = def_area):
 	var newBrick
-	var death = get_node("Death")
+	var life = get_node("Life")
 	#Solid brick: Enough said
 	#Rings: Skip only odds/evens
 	#Axis: Only show when one coord is zero, or both are equal
@@ -167,7 +176,7 @@ func generate_brick_shapes(shape, area = def_area):
 			for y in range(0,area.y):
 				newBrick = BRICK.instance()
 				newBrick.get_node("Label").text = str(x) + ", " + str(y)
-				self.add_child_below_node(death,newBrick)
+				self.add_child_below_node(life,newBrick)
 				newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
 				newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
 	if shape == "Rings":
@@ -176,7 +185,7 @@ func generate_brick_shapes(shape, area = def_area):
 				if y % 2 == 0 || x == -area.x || x == area.x || y == abs(x):
 					newBrick = BRICK.instance()
 					newBrick.get_node("Label").text = str(x) + ", " + str(y)
-					self.add_child_below_node(death,newBrick)
+					self.add_child_below_node(life,newBrick)
 					newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
 					newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
 	if shape == "Grid":
@@ -185,7 +194,7 @@ func generate_brick_shapes(shape, area = def_area):
 				if y % 2 == 0 || x % 2 == 0:
 					newBrick = BRICK.instance()
 					newBrick.get_node("Label").text = str(x) + ", " + str(y)
-					self.add_child_below_node(death,newBrick)
+					self.add_child_below_node(life,newBrick)
 					newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
 					newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
 	if shape == "CheckerAlt":
@@ -194,7 +203,7 @@ func generate_brick_shapes(shape, area = def_area):
 				if (y % 2 == 0 and x % 2 != 0) or (y % 2 != 0 and x % 2 == 0):
 					newBrick = BRICK.instance()
 					newBrick.get_node("Label").text = str(x) + ", " + str(y)
-					self.add_child_below_node(death,newBrick)
+					self.add_child_below_node(life,newBrick)
 					newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
 					newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
 	if shape == "CheckerSame":
@@ -203,7 +212,7 @@ func generate_brick_shapes(shape, area = def_area):
 				if (y % 2 != 0 and x % 2 != 0) or (y % 2 == 0 and x % 2 == 0):
 					newBrick = BRICK.instance()
 					newBrick.get_node("Label").text = str(x) + ", " + str(y)
-					self.add_child_below_node(death,newBrick)
+					self.add_child_below_node(life,newBrick)
 					newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
 					newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
 	if shape == "Tri":
@@ -212,7 +221,7 @@ func generate_brick_shapes(shape, area = def_area):
 				if (y > abs(x) + 1):
 					newBrick = BRICK.instance()
 					newBrick.get_node("Label").text = str(x) + ", " + str(y)
-					self.add_child_below_node(death,newBrick)
+					self.add_child_below_node(life,newBrick)
 					newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
 					newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
 	if shape == "RevTri":
@@ -221,7 +230,7 @@ func generate_brick_shapes(shape, area = def_area):
 				if (abs(x) > y) || abs(x) > (area.y - (y+1)):
 					newBrick = BRICK.instance()
 					newBrick.get_node("Label").text = str(x) + ", " + str(y)
-					self.add_child_below_node(death,newBrick)
+					self.add_child_below_node(life,newBrick)
 					newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
 					newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
 	

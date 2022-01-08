@@ -1,6 +1,10 @@
 extends KinematicBody2D
 
 var started = false
+var speed = 1500
+var non_turbo = 1
+var applied_turbo = non_turbo
+var turbo = 2
 
 const BALL = preload("res://scenes/entities/Ball.tscn")
 
@@ -8,14 +12,42 @@ func _ready():
 	pass
 
 func _process(delta):
-	var pos = get_global_mouse_position().x
-	self.position.x = get_global_mouse_position().x
-	if(pos <= 275):
+	#var pos = 0
+	if settings.control_scheme == 0:
+		if Input.is_action_just_pressed("click"):
+			self.start()
+		#mouse
+		#pos = get_global_mouse_position().x
+		self.position.x = get_global_mouse_position().x
+	elif settings.control_scheme == 1:
+		#wasd
+		if Input.is_action_pressed("S"):
+			applied_turbo = turbo
+		else:
+			applied_turbo = non_turbo
+		if Input.is_action_pressed("A"):
+			self.position.x -= speed * applied_turbo * delta
+		elif Input.is_action_pressed("D"):
+			self.position.x += speed * applied_turbo * delta
+		if Input.is_action_just_pressed("W"):
+			self.start()
+	elif settings.control_scheme == 2:
+		#arrows
+		if Input.is_action_pressed("ui_down"):
+			applied_turbo = turbo
+		else:
+			applied_turbo = non_turbo
+		if Input.is_action_pressed("ui_left"):
+			self.position.x -= speed * applied_turbo * delta
+		elif Input.is_action_pressed("ui_right"):
+			self.position.x += speed * applied_turbo * delta
+		if Input.is_action_just_pressed("ui_up"):
+			self.start()
+	if(self.position.x <= 275):
 		self.position.x = 275
-	if(pos >= 1760):
+	if(self.position.x >= 1760):
 		self.position.x = 1760
-	if Input.is_action_just_pressed("click"):
-		self.start()
+	
 
 func start():
 	if !started:

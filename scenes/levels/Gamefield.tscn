@@ -1,26 +1,27 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/levels/Gamefield.gd" type="Script" id=1]
 [ext_resource path="res://images/GameBackground.png" type="Texture" id=2]
 [ext_resource path="res://scenes/entities/Paddle.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/entities/Wall.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/entities/Death.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/entities/Death.gd" type="Script" id=6]
-[ext_resource path="res://scenes/entities/Life.tscn" type="PackedScene" id=7]
-[ext_resource path="res://other/long_shot/Long_Shot.ttf" type="DynamicFontData" id=8]
-[ext_resource path="res://scenes/menus/PauseDialog.tscn" type="PackedScene" id=9]
-[ext_resource path="res://scenes/menus/Transition.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/entities/Life.tscn" type="PackedScene" id=5]
+[ext_resource path="res://other/long_shot/Long_Shot.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://scenes/menus/PauseDialog.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/menus/Transition.tscn" type="PackedScene" id=8]
 
 [sub_resource type="DynamicFont" id=1]
-font_data = ExtResource( 8 )
+font_data = ExtResource( 6 )
 
 [sub_resource type="Theme" id=2]
 
 [sub_resource type="DynamicFont" id=3]
-font_data = ExtResource( 8 )
+font_data = ExtResource( 6 )
 
 [sub_resource type="DynamicFont" id=4]
-font_data = ExtResource( 8 )
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=5]
+font_data = ExtResource( 6 )
 
 [node name="Gamefield" type="Node2D"]
 script = ExtResource( 1 )
@@ -49,11 +50,7 @@ rotation = 1.5708
 position = Vector2( 2048, 0 )
 rotation = 1.5708
 
-[node name="Death" parent="." instance=ExtResource( 5 )]
-position = Vector2( 1024, 1163.95 )
-script = ExtResource( 6 )
-
-[node name="Life" parent="." instance=ExtResource( 7 )]
+[node name="Life" parent="." instance=ExtResource( 5 )]
 position = Vector2( 1023.88, 612.042 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -113,7 +110,15 @@ custom_fonts/font = SubResource( 4 )
 text = "Lives: 99"
 align = 1
 
-[node name="PauseDialog" parent="Camera2D/CanvasLayer" instance=ExtResource( 9 )]
+[node name="Speed" type="Label" parent="Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
+visible = false
+margin_left = 612.0
+margin_right = 652.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 5 )
+text = "Speed: 0"
+
+[node name="PauseDialog" parent="Camera2D/CanvasLayer" instance=ExtResource( 7 )]
 
 [node name="CompleteCheck" type="Timer" parent="."]
 autostart = true
@@ -121,10 +126,9 @@ autostart = true
 [node name="PointTimer" type="Timer" parent="."]
 wait_time = 0.05
 
-[node name="Transition" parent="." instance=ExtResource( 10 )]
+[node name="Transition" parent="." instance=ExtResource( 8 )]
 margin_right = 2048.0
 margin_bottom = 2048.0
 rect_min_size = Vector2( 2048, 2048 )
-[connection signal="body_entered" from="Death" to="Death" method="_on_Death_body_entered"]
 [connection signal="popup_hide" from="Camera2D/CanvasLayer/PauseDialog" to="." method="_on_PauseDialog_popup_hide"]
 [connection signal="timeout" from="CompleteCheck" to="." method="_on_CompleteCheck_timeout"]
