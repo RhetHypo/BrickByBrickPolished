@@ -95,6 +95,7 @@ func award_lives(newLives):
 	elif lives <= 0:
 		globals.endgame = true
 		globals.endgame_score = points
+		globals.endgame_difficulty = settings.difficulty
 		get_node("Transition").switch_scene("res://scenes/menus/Highscores.tscn")
 		#TODO: Actual game over screen
 

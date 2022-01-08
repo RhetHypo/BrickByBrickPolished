@@ -14,19 +14,23 @@
 size = 72
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=5]
-size = 48
-font_data = ExtResource( 3 )
-
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="DynamicFont" id=2]
 size = 48
 font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=3]
-size = 32
+size = 48
 font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=4]
+size = 32
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 32
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=6]
 size = 32
 font_data = ExtResource( 3 )
 
@@ -35,10 +39,6 @@ size = 32
 font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=8]
-size = 32
-font_data = ExtResource( 3 )
-
-[sub_resource type="DynamicFont" id=9]
 size = 48
 font_data = ExtResource( 3 )
 
@@ -55,7 +55,6 @@ grow_vertical = 2
 texture = ExtResource( 2 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -196.0
@@ -91,7 +90,7 @@ texture_focused = ExtResource( 8 )
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/Easier"]
 margin_right = 127.0
 margin_bottom = 65.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "EASY"
 align = 1
@@ -111,7 +110,7 @@ texture_focused = ExtResource( 8 )
 margin_right = 127.0
 margin_bottom = 65.0
 focus_mode = 1
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "MEDIUM"
 align = 1
@@ -130,7 +129,7 @@ texture_focused = ExtResource( 8 )
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/Harder"]
 margin_right = 130.0
 margin_bottom = 65.0
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "HARD"
 align = 1
@@ -156,7 +155,7 @@ margin_left = 32.0
 margin_right = 180.0
 margin_bottom = 35.0
 size_flags_horizontal = 3
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 4 )
 text = "NAME"
 align = 2
 
@@ -167,7 +166,7 @@ margin_left = 212.0
 margin_right = 360.0
 margin_bottom = 35.0
 size_flags_horizontal = 3
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 5 )
 text = "SCORE"
 
 [node name="BlankLabel2" type="Label" parent="VBoxContainer/GridContainer" groups=[
@@ -199,7 +198,7 @@ margin_bottom = 42.0
 [node name="Label" type="Label" parent="NewHighscore/VBoxContainer"]
 margin_right = 216.0
 margin_bottom = 35.0
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 6 )
 text = "ENTER YOUR NAME"
 align = 1
 
@@ -207,7 +206,7 @@ align = 1
 margin_top = 39.0
 margin_right = 216.0
 margin_bottom = 84.0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 7 )
 align = 1
 max_length = 3
 
@@ -231,7 +230,7 @@ margin_left = -36.0
 margin_top = -25.5
 margin_right = 36.0
 margin_bottom = 25.5
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "BACK"
 
