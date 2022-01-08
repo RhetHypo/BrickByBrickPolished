@@ -88,6 +88,9 @@ func award_lives(newLives):
 		get_node("Paddle").newLife()
 	elif lives <= 0:
 		print("Game Over")
+		globals.endgame = true
+		globals.endgame_score = points
+		get_node("Transition").switch_scene("res://scenes/menus/Highscores.tscn")
 		#TODO: Actual game over screen
 
 func level_check():

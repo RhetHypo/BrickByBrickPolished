@@ -240,3 +240,5 @@ visible = false
 [connection signal="timeout" from="DelayTimer" to="." method="_on_DelayTimer_timeout"]
 [connection signal="pressed" from="CenterContainer/ButtonGrid/NewGameButton" to="." method="_on_NewGameButton_pressed"]
 [connection signal="pressed" from="CenterContainer/ButtonGrid/SettingsButton" to="." method="_on_SettingsButton_pressed"]
+[connection signal="pressed" from="CenterContainer/ButtonGrid/HighscoresButton" to="." method="_on_HighscoresButton_pressed"]
+[connection signal="pressed" from="CenterContainer/ButtonGrid/Quit" to="." method="_on_Quit_pressed"]

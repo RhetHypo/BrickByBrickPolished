@@ -28,3 +28,11 @@ func _on_SettingsButton_pressed():
 
 func _on_NewGameButton_pressed():
 	get_node("Transition").switch_scene("res://scenes/levels/Gamefield.tscn")
+
+func _on_HighscoresButton_pressed():
+	get_node("Transition").switch_scene("res://scenes/menus/Highscores.tscn")
+
+
+func _on_Quit_pressed():
+	get_tree().quit()
+	#should probably have a confirm dialog here

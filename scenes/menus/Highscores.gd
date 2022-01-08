@@ -9,14 +9,20 @@ const SCORE = preload("res://scenes/menus/CustomScore.tscn")
 onready var grid = get_node("VBoxContainer/GridContainer")
 
 func _ready():
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	if globals.endgame:
 		get_node("NewHighscore").popup_centered()
+	globals.endgame = false
 	get_node("VBoxContainer/HBoxContainer/Medium").grab_focus()
 	load_scores()
 	display_scores()
+	get_node("Transition").fade_in()
 
 func display_scores():
 	var index = 0
+	for child in grid.get_children():
+		if !child.is_in_group("Label"):
+			child.queue_free()
 	for score in scores:
 		index += 1
 		var newIndex = NAME.instance()
@@ -26,7 +32,7 @@ func display_scores():
 		newName.text = score[0]
 		grid.add_child(newName)
 		var newScore = SCORE.instance()
-		newScore.text = score[1]
+		newScore.text = str(score[1])
 		grid.add_child(newScore)
 		var newspacer = NAME.instance()
 		newspacer.text = ""
@@ -36,9 +42,11 @@ func load_scores():
 	var getFile = File.new()
 	if getFile.file_exists(scores_file):
 		getFile.open(scores_file, File.READ)
-		scores = getFile.get_var()
-		getFile.close()
-		print("found score")
+		for j in range(len(scores),10):
+			var player = getFile.get_var()
+			var score = getFile.get_var()
+			scores.append([player, score])
+	getFile.close()
 	if len(scores) < 10:
 		for i in range(len(scores),10):
 			print("generating score")
@@ -52,10 +60,15 @@ func save_score(new_text):
 			break
 		else:
 			position += 1
-	print(scores)
 	scores.insert(position,[new_text.to_upper(),globals.endgame_score])
 	scores.pop_back()
-	print(scores)
+	var setFile = File.new()
+	setFile.open(scores_file, File.WRITE)
+	for k in range(0,len(scores)):
+		setFile.store_var(scores[k][0])
+		setFile.store_var(scores[k][1])
+	setFile.close()
+	display_scores()
 	#should 
 	#1. get current scores, DONE
 	#2. find if the new one is a high score, 
@@ -79,3 +92,7 @@ func _on_LineEdit_text_entered(new_text):
 	print(new_text)
 	get_node("NewHighscore").hide()
 	save_score(new_text)
+
+
+func _on_BackButton_pressed():
+	get_node("Transition").switch_scene("res://scenes/menus/MainTitle.tscn")
