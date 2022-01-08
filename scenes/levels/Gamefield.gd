@@ -9,8 +9,8 @@ var brick_offset = 0
 var left_offset = 1024
 var top_offset = 200
 
-var generate_mode = 1
-var def_area = Vector2(6,7) #first is RADIUS for row length
+var generate_mode = 3
+var def_area = Vector2(6,9) #first is RADIUS for row length
 var def_bricks = [Vector2(1,1),Vector2(1,2),Vector2(2,2),Vector2(2,1)]
 var def_speed = 500
 var active_speed = 500
@@ -26,6 +26,7 @@ export var max_roll = 0.5
 
 var shaking = 0.0
 var shake_amount = 0.25
+export var shapes = ["Grid", "RevTri", "CheckerSame", "Tri", "CheckerAlt"]
 
 const BRICK = preload("res://scenes/entities/Brick.tscn")
 
@@ -33,10 +34,7 @@ onready var camera = get_node("Camera2D")
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-	if generate_mode == 1:
-		generate_brick_area()
-	elif generate_mode == 2:
-		generate_brick_list()
+	generate_bricks()
 	update_points(points, points)
 	update_level(level)
 	update_lives(lives)
@@ -54,6 +52,14 @@ func _process(delta):
 	if shaking > 0:
 		shaking = max(shaking - decay * delta,0)
 		shake(shaking)
+
+func generate_bricks():
+	if generate_mode == 1:
+		generate_brick_area()
+	elif generate_mode == 2:
+		generate_brick_list()
+	elif generate_mode == 3:
+		generate_brick_shapes(shapes[(level - 1) % len(shapes)])
 
 func add_shaking(amount):
     shaking = min(shaking + amount, 1.0)
@@ -101,7 +107,7 @@ func level_check():
 	if complete:
 		level += 1
 		update_level(level)
-		generate_brick_area()
+		generate_bricks()
 		for child in self.get_children():
 			if child.is_in_group("Ball"):
 				active_speed = def_speed + (level * def_speed/10)
@@ -149,3 +155,77 @@ func _on_PauseDialog_popup_hide():
 func init_settings():
 	get_node("Camera2D/CanvasLayer/PauseDialog/MarginContainer/VBoxContainer/DifficultyOptions").visible = false
 
+func generate_brick_shapes(shape, area = def_area):
+	var newBrick
+	var death = get_node("Death")
+	#Solid brick: Enough said
+	#Rings: Skip only odds/evens
+	#Axis: Only show when one coord is zero, or both are equal
+	#Triangles: Two triangles, horizontal or vertical, in or out.
+	#Checkerboard: Alternating
+	if shape == "Solid":
+		for x in range(-area.x,area.x + 1):
+			for y in range(0,area.y):
+				newBrick = BRICK.instance()
+				newBrick.get_node("Label").text = str(x) + ", " + str(y)
+				self.add_child_below_node(death,newBrick)
+				newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
+				newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
+	if shape == "Rings":
+		for x in range(-area.x,area.x + 1):
+			for y in range(0,area.y):
+				if y % 2 == 0 || x == -area.x || x == area.x || y == abs(x):
+					newBrick = BRICK.instance()
+					newBrick.get_node("Label").text = str(x) + ", " + str(y)
+					self.add_child_below_node(death,newBrick)
+					newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
+					newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
+	if shape == "Grid":
+		for x in range(-area.x,area.x + 1):
+			for y in range(0,area.y):
+				if y % 2 == 0 || x % 2 == 0:
+					newBrick = BRICK.instance()
+					newBrick.get_node("Label").text = str(x) + ", " + str(y)
+					self.add_child_below_node(death,newBrick)
+					newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
+					newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
+	if shape == "CheckerAlt":
+		for x in range(-area.x,area.x + 1):
+			for y in range(0,area.y):
+				if (y % 2 == 0 and x % 2 != 0) or (y % 2 != 0 and x % 2 == 0):
+					newBrick = BRICK.instance()
+					newBrick.get_node("Label").text = str(x) + ", " + str(y)
+					self.add_child_below_node(death,newBrick)
+					newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
+					newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
+	if shape == "CheckerSame":
+		for x in range(-area.x,area.x + 1):
+			for y in range(0,area.y):
+				if (y % 2 != 0 and x % 2 != 0) or (y % 2 == 0 and x % 2 == 0):
+					newBrick = BRICK.instance()
+					newBrick.get_node("Label").text = str(x) + ", " + str(y)
+					self.add_child_below_node(death,newBrick)
+					newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
+					newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
+	if shape == "Tri":
+		for x in range(-area.x,area.x + 1):
+			for y in range(0,area.y):
+				if (y > abs(x) + 1):
+					newBrick = BRICK.instance()
+					newBrick.get_node("Label").text = str(x) + ", " + str(y)
+					self.add_child_below_node(death,newBrick)
+					newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
+					newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
+	if shape == "RevTri":
+		for x in range(-area.x,area.x + 1):
+			for y in range(0,area.y):
+				if (abs(x) > y) || abs(x) > (area.y - (y+1)):
+					newBrick = BRICK.instance()
+					newBrick.get_node("Label").text = str(x) + ", " + str(y)
+					self.add_child_below_node(death,newBrick)
+					newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
+					newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
+	
+
+func _on_Life_body_exited(body):
+	pass # Replace with function body.
