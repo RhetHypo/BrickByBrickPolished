@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scenes/menus/MainTitle.gd" type="Script" id=1]
 [ext_resource path="res://images/TitleBackground.png" type="Texture" id=2]
@@ -10,11 +10,26 @@
 [ext_resource path="res://scenes/menus/PauseDialog.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/menus/Transition.tscn" type="PackedScene" id=9]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="Shader" id=8]
+code = "shader_type canvas_item;
+
+void fragment(){
+	//COLOR = texture(TEXTURE, UV);
+	COLOR = vec4(UV, 0.5, 1.0);
+	COLOR.z = abs(cos(TIME/3.0));
+}
+
+//void vertex(){
+//	VERTEX += vec2(cos(TIME)*100.0, sin(TIME)*100.0);
+//}"
+
+[sub_resource type="ShaderMaterial" id=9]
+shader = SubResource( 8 )
+
+[sub_resource type="DynamicFont" id=3]
 font_data = ExtResource( 3 )
 
-[sub_resource type="Animation" id=2]
-resource_name = "Buttons"
+[sub_resource type="Animation" id=4]
 length = 2.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("CenterContainer/ButtonGrid/NewGameButton:modulate")
@@ -65,8 +80,7 @@ tracks/3/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "Title"
+[sub_resource type="Animation" id=5]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Label:rect_position")
 tracks/0/interp = 1
@@ -92,11 +106,12 @@ tracks/1/keys = {
 "values": [ -15.0, -15.0, 0.0 ]
 }
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=6]
 size = 128
+outline_size = 8
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=7]
 size = 32
 font_data = ExtResource( 3 )
 
@@ -106,13 +121,13 @@ anchor_bottom = 1.0
 script = ExtResource( 1 )
 
 [node name="CenterContainer2" type="CenterContainer" parent="."]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="CenterContainer2"]
+material = SubResource( 9 )
 margin_right = 1032.0
 margin_bottom = 608.0
 texture = ExtResource( 2 )
@@ -122,12 +137,12 @@ margin_left = 20.0
 margin_top = 20.0
 margin_right = 20.0
 margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 1 )
+custom_fonts/normal_font = SubResource( 3 )
 text = "The quick brown fox jumps over the lazy dog"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Buttons = SubResource( 2 )
-anims/Title = SubResource( 3 )
+anims/Buttons = SubResource( 4 )
+anims/Title = SubResource( 5 )
 
 [node name="Label" type="Label" parent="."]
 margin_left = 213.0
@@ -135,7 +150,8 @@ margin_top = -200.0
 margin_right = 811.0
 margin_bottom = -66.0
 rect_rotation = -15.0218
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 6 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 text = "BRICK BY BRICK"
 align = 1
 
@@ -169,7 +185,7 @@ texture_disabled = ExtResource( 7 )
 [node name="Label" type="Label" parent="CenterContainer/ButtonGrid/NewGameButton"]
 margin_right = 128.0
 margin_bottom = 64.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "NEW GAME"
 align = 1
@@ -188,7 +204,7 @@ texture_disabled = ExtResource( 7 )
 [node name="Label" type="Label" parent="CenterContainer/ButtonGrid/SettingsButton"]
 margin_right = 128.0
 margin_bottom = 64.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "SETTINGS"
 align = 1
@@ -207,7 +223,7 @@ texture_disabled = ExtResource( 7 )
 [node name="Label" type="Label" parent="CenterContainer/ButtonGrid/HighscoresButton"]
 margin_right = 128.0
 margin_bottom = 64.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "HIGHSCORES"
 align = 1
@@ -227,7 +243,7 @@ texture_disabled = ExtResource( 7 )
 [node name="Label" type="Label" parent="CenterContainer/ButtonGrid/Quit"]
 margin_right = 128.0
 margin_bottom = 65.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "QUIT"
 align = 1

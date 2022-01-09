@@ -18,6 +18,7 @@ _data = [ Vector2( 0.453924, 93.84 ), 0.0, 0.0, 0, 0, Vector2( 0.684303, 153.9 )
 [node name="Ball" type="RigidBody2D" groups=[
 "Ball",
 ]]
+modulate = Color( 0, 0, 0, 1 )
 physics_material_override = SubResource( 1 )
 gravity_scale = 0.0
 contacts_reported = 1

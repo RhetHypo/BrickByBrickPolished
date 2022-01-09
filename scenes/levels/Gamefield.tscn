@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/levels/Gamefield.gd" type="Script" id=1]
 [ext_resource path="res://images/GameBackground.png" type="Texture" id=2]
@@ -9,24 +9,40 @@
 [ext_resource path="res://scenes/menus/PauseDialog.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/menus/Transition.tscn" type="PackedScene" id=8]
 
-[sub_resource type="DynamicFont" id=1]
-font_data = ExtResource( 6 )
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
 
-[sub_resource type="Theme" id=2]
+void fragment(){
+	//COLOR = texture(TEXTURE, UV);
+	COLOR = vec4(UV, 0.5, 1.0);
+	COLOR.z = abs(cos(TIME/3.0));
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 
 [sub_resource type="DynamicFont" id=3]
+size = 32
 font_data = ExtResource( 6 )
 
-[sub_resource type="DynamicFont" id=4]
-font_data = ExtResource( 6 )
+[sub_resource type="Theme" id=4]
 
 [sub_resource type="DynamicFont" id=5]
+size = 32
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 32
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=7]
 font_data = ExtResource( 6 )
 
 [node name="Gamefield" type="Node2D"]
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 2 )
 position = Vector2( 1024, 600 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
@@ -35,7 +51,6 @@ texture = ExtResource( 2 )
 position = Vector2( 1024, 1064 )
 
 [node name="Walls" type="Node2D" parent="."]
-editor/display_folded = true
 __meta__ = {
 "_edit_group_": true
 }
@@ -87,7 +102,8 @@ margin_left = 156.0
 margin_right = 380.0
 margin_bottom = 18.0
 rect_min_size = Vector2( 224, 0 )
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Score: 999,999"
 align = 1
 
@@ -96,8 +112,9 @@ margin_left = 384.0
 margin_right = 608.0
 margin_bottom = 18.0
 rect_min_size = Vector2( 224, 0 )
-theme = SubResource( 2 )
-custom_fonts/font = SubResource( 3 )
+theme = SubResource( 4 )
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Level: 99"
 align = 1
 
@@ -106,7 +123,8 @@ margin_left = 612.0
 margin_right = 836.0
 margin_bottom = 18.0
 rect_min_size = Vector2( 224, 0 )
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 6 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Lives: 99"
 align = 1
 
@@ -115,7 +133,7 @@ visible = false
 margin_left = 612.0
 margin_right = 652.0
 margin_bottom = 14.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 7 )
 text = "Speed: 0"
 
 [node name="PauseDialog" parent="Camera2D/CanvasLayer" instance=ExtResource( 7 )]
@@ -127,6 +145,7 @@ autostart = true
 wait_time = 0.05
 
 [node name="Transition" parent="." instance=ExtResource( 8 )]
+visible = false
 margin_right = 2048.0
 margin_bottom = 2048.0
 rect_min_size = Vector2( 2048, 2048 )

@@ -117,6 +117,7 @@ items = [ "MOUSE", null, false, 0, null, "WASD", null, false, 1, null, "ARROWS",
 selected = 0
 
 [node name="GraphicsOptions" type="OptionButton" parent="MarginContainer/VBoxContainer"]
+visible = false
 margin_top = 214.0
 margin_right = 150.0
 margin_bottom = 242.0

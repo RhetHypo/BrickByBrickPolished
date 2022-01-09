@@ -5,7 +5,7 @@ var field_height = 32
 
 var brick_width = 128
 var brick_height = 64
-var brick_offset = 0
+var brick_offset = 10
 var left_offset = 1024
 var top_offset = 200
 
