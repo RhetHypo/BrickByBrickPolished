@@ -31,6 +31,7 @@ export var shapes = ["Grid", "RevTri", "CheckerSame", "Tri", "CheckerAlt"]
 const BRICK = preload("res://scenes/entities/Brick.tscn")
 
 onready var camera = get_node("Camera2D")
+onready var deathAudio = get_node("deathPlayer")
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
@@ -91,6 +92,9 @@ func award_lives(newLives):
 	lives += newLives
 	update_lives(lives)
 	if newLives < 0 and lives >= 1:
+		if settings.sound_enabled:
+			deathAudio.volume_db = settings.sound_level - 50
+			deathAudio.play()
 		get_node("Paddle").newLife()
 	elif lives <= 0:
 		globals.endgame = true

@@ -10,7 +10,7 @@
 [ext_resource path="res://scenes/menus/PauseDialog.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/menus/Transition.tscn" type="PackedScene" id=9]
 
-[sub_resource type="Shader" id=8]
+[sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
 void fragment(){
@@ -23,8 +23,8 @@ void fragment(){
 //	VERTEX += vec2(cos(TIME)*100.0, sin(TIME)*100.0);
 //}"
 
-[sub_resource type="ShaderMaterial" id=9]
-shader = SubResource( 8 )
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 
 [sub_resource type="DynamicFont" id=3]
 font_data = ExtResource( 3 )
@@ -127,7 +127,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="CenterContainer2"]
-material = SubResource( 9 )
+material = SubResource( 2 )
 margin_right = 1032.0
 margin_bottom = 608.0
 texture = ExtResource( 2 )

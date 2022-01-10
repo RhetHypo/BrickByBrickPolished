@@ -9,6 +9,10 @@ var paddle_width = 512
 
 var angle_cap = 0.75
 
+onready var breakAudio = get_node("breakPlayer")
+onready var paddleAudio = get_node("paddlePlayer")
+onready var wallAudio = get_node("wallPlayer")
+
 func _ready():
 	pass
 
@@ -30,14 +34,23 @@ func _integrate_forces(state):
 
 func _on_Ball_body_entered(body):
 	if body.is_in_group("Paddle"):
+		if settings.sound_enabled:
+			paddleAudio.volume_db = settings.sound_level - 50
+			paddleAudio.play()
 		self.apply_central_impulse(Vector2(current_speed * 2 * (self.position.x - body.position.x)/paddle_width,0))
 	elif body.is_in_group("Brick"):
+		if settings.sound_enabled:
+			breakAudio.volume_db = settings.sound_level - 50
+			breakAudio.play()
 		get_parent().award_points(10)
-		print("TEMP: ", (settings.difficulty+1)*2)
 		temp_speed += ((settings.difficulty+1)*2)
 		if temp_speed > max_temp_speed:
 			temp_speed = max_temp_speed
 		body.queue_free()
+	else:
+		if settings.sound_enabled:
+			wallAudio.volume_db = settings.sound_level - 50
+			wallAudio.play()
 
 func death():
 	#TODO: Add check for if this is the last ball in play, if adding multiple balls

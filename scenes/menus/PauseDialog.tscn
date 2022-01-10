@@ -104,6 +104,7 @@ text = "SOUND"
 margin_top = 150.0
 margin_right = 150.0
 margin_bottom = 166.0
+max_value = 50.0
 ticks_on_borders = true
 
 [node name="ControlOptions" type="OptionButton" parent="MarginContainer/VBoxContainer"]
