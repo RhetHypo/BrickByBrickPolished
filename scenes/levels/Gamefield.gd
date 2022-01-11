@@ -32,8 +32,12 @@ const BRICK = preload("res://scenes/entities/Brick.tscn")
 
 onready var camera = get_node("Camera2D")
 onready var deathAudio = get_node("deathPlayer")
+onready var musicAudio = get_node("musicPlayer")
 
 func _ready():
+	if settings.music_enabled:
+		musicAudio.volume_db = settings.music_level - 50
+		musicAudio.play()
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	generate_bricks()
 	update_points(points, points)
@@ -100,6 +104,8 @@ func award_lives(newLives):
 		globals.endgame = true
 		globals.endgame_score = points
 		globals.endgame_difficulty = settings.difficulty
+		deathAudio.play()
+		yield(deathAudio, "finished")
 		get_node("Transition").switch_scene("res://scenes/menus/Highscores.tscn")
 		#TODO: Actual game over screen
 
@@ -157,7 +163,7 @@ func _on_CompleteCheck_timeout():
 	level_check()
 
 func pause_game():
-	get_node("Camera2D/CanvasLayer/PauseDialog").popup_centered()
+	get_node("PauseDialog").popup_centered()
 	get_tree().paused = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
@@ -166,7 +172,7 @@ func _on_PauseDialog_popup_hide():
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
 func init_settings():
-	get_node("Camera2D/CanvasLayer/PauseDialog/MarginContainer/VBoxContainer/DifficultyOptions").visible = false
+	get_node("PauseDialog/MarginContainer/VBoxContainer/DifficultyOptions").visible = false
 
 func generate_brick_shapes(shape, area = def_area):
 	var newBrick

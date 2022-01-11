@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/FadeInOutLocalForecast.wav-c8c4f5281c51b48cf636eda293ca4e60.sample"
+
+[deps]
+
+source_file="res://audio/FadeInOutLocalForecast.wav"
+dest_files=[ "res://.import/FadeInOutLocalForecast.wav-c8c4f5281c51b48cf636eda293ca4e60.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

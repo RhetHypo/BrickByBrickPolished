@@ -1,5 +1,7 @@
 extends PopupDialog
 
+onready var musicAudio = get_parent().get_node("musicPlayer")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	settings.load_settings()
@@ -19,6 +21,10 @@ func update_settings():
 func _on_Music_pressed():
 	settings.music_enabled = !settings.music_enabled
 	update_settings()
+	if settings.music_enabled:
+		musicAudio.play()
+	else:
+		musicAudio.stop()
 
 
 func _on_MusicHSlider_value_changed(value):
@@ -27,6 +33,7 @@ func _on_MusicHSlider_value_changed(value):
 #		settings.music_enabled = true
 #	else:
 #		settings.music_enabled = false
+	musicAudio.volume_db = settings.music_level - 50
 	update_settings()
 
 
@@ -60,4 +67,4 @@ func _on_DifficultyOptions_item_selected(ID):
 
 func _on_QuitToMainButton_pressed():
 	get_tree().paused = false
-	get_parent().get_parent().get_parent().get_node("Transition").switch_scene("res://scenes/menus/MainTitle.tscn")
+	get_parent().get_node("Transition").switch_scene("res://scenes/menus/MainTitle.tscn")

@@ -90,6 +90,7 @@ text = "MUSIC"
 margin_top = 86.0
 margin_right = 150.0
 margin_bottom = 102.0
+max_value = 50.0
 ticks_on_borders = true
 
 [node name="Sound" type="Button" parent="MarginContainer/VBoxContainer"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scenes/menus/MainTitle.gd" type="Script" id=1]
 [ext_resource path="res://images/TitleBackground.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://images/disabled.png" type="Texture" id=7]
 [ext_resource path="res://scenes/menus/PauseDialog.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/menus/Transition.tscn" type="PackedScene" id=9]
+[ext_resource path="res://audio/FadeInOutLocalForecast.wav" type="AudioStream" id=10]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -253,6 +254,9 @@ valign = 1
 
 [node name="Transition" parent="." instance=ExtResource( 9 )]
 visible = false
+
+[node name="musicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="DelayTimer" to="." method="_on_DelayTimer_timeout"]
 [connection signal="pressed" from="CenterContainer/ButtonGrid/NewGameButton" to="." method="_on_NewGameButton_pressed"]

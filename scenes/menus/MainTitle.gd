@@ -2,9 +2,13 @@ extends Control
 
 #onready var tween = get_node("TransitionTween")
 #onready var fadePanel = get_node("TransitionPanel")
+onready var musicAudio = get_node("musicPlayer")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if settings.music_enabled:
+		musicAudio.volume_db = settings.music_level - 50
+		musicAudio.play()
 	$DelayTimer.start()
 	get_node("Transition").fade_in()
 	get_node("PauseDialog/MarginContainer/VBoxContainer/QuitToMainButton").visible = false

@@ -9,8 +9,12 @@ const NAME = preload("res://scenes/menus/CustomName.tscn")
 const SCORE = preload("res://scenes/menus/CustomScore.tscn")
 
 onready var grid = get_node("VBoxContainer/GridContainer")
+onready var musicAudio = get_node("musicPlayer")
 
 func _ready():
+	if settings.music_enabled:
+		musicAudio.volume_db = settings.music_level - 50
+		musicAudio.play()
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	if globals.endgame:
 		get_node("NewHighscore").popup_centered()
