@@ -51,7 +51,7 @@ tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
-tracks/0/enabled = true
+tracks/0/enabled = false
 tracks/0/keys = {
 "times": PoolRealArray( 0.0138718, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
@@ -82,3 +82,5 @@ anims/create = SubResource( 2 )
 
 [node name="Brick" parent="." instance=ExtResource( 2 )]
 position = Vector2( 0, 0 )
+
+[node name="Tween" type="Tween" parent="."]

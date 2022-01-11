@@ -207,7 +207,7 @@ func generate_brick_shapes(shape, area = def_area):
 			for y in range(0,area.y):
 				if y % 2 == 0 || x % 2 == 0:
 					newBrick = new_brick(x,y)
-					self.add_child_below_node(life,newBrick)
+					#self.add_child_below_node(life,newBrick)
 #					newBrick = BRICK.instance()
 #					newBrick.get_node("Label").text = str(x) + ", " + str(y)
 #					self.add_child_below_node(life,newBrick)
@@ -249,11 +249,12 @@ func generate_brick_shapes(shape, area = def_area):
 
 func new_brick(x, y):
 	var newBrick = PHANTOM.instance()
-	#newBrick.get_node("Brick/Label").text = str(x) + ", " + str(y)
+	newBrick.get_node("Brick/Label").text = str(x) + ", " + str(y)
 	newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
 	newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
 	self.add_child_below_node(life,newBrick)
-	#newBrick.get_node("AnimationPlayer").play("create")
+	newBrick.get_node("AnimationPlayer").play("create")
+	yield(newBrick.get_node("AnimationPlayer"),"animation_finished")
 
 func _on_Life_body_exited(body):
 	pass # Replace with function body.
