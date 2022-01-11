@@ -29,7 +29,9 @@ var shake_amount = 0.25
 export var shapes = ["Grid", "RevTri", "CheckerSame", "Tri", "CheckerAlt"]
 
 const BRICK = preload("res://scenes/entities/Brick.tscn")
+const PHANTOM = preload("res://scenes/entities/Phantom.tscn")
 
+onready var life = get_node("Life")
 onready var camera = get_node("Camera2D")
 onready var deathAudio = get_node("deathPlayer")
 onready var musicAudio = get_node("musicPlayer")
@@ -104,8 +106,10 @@ func award_lives(newLives):
 		globals.endgame = true
 		globals.endgame_score = points
 		globals.endgame_difficulty = settings.difficulty
-		deathAudio.play()
-		yield(deathAudio, "finished")
+		if settings.sound_enabled:
+			deathAudio.volume_db = settings.sound_level - 50
+			deathAudio.play()
+			yield(deathAudio, "finished")
 		get_node("Transition").switch_scene("res://scenes/menus/Highscores.tscn")
 		#TODO: Actual game over screen
 
@@ -124,7 +128,6 @@ func level_check():
 		generate_bricks()
 		for child in self.get_children():
 			if child.is_in_group("Ball"):
-				print("LEVEL INCREASE: ",def_speed/(15-settings.difficulty*4))
 				active_speed = def_speed + (level * def_speed/(15-settings.difficulty*4))
 				if active_speed > max_speed:
 					active_speed = max_speed
@@ -163,7 +166,7 @@ func _on_CompleteCheck_timeout():
 	level_check()
 
 func pause_game():
-	get_node("PauseDialog").popup_centered()
+	get_node("Camera2D/CanvasLayer/PauseDialog").popup_centered()
 	get_tree().paused = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
@@ -172,11 +175,11 @@ func _on_PauseDialog_popup_hide():
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
 func init_settings():
-	get_node("PauseDialog/MarginContainer/VBoxContainer/DifficultyOptions").visible = false
+	get_node("Camera2D/CanvasLayer/PauseDialog/MarginContainer/VBoxContainer/DifficultyOptions").visible = false
 
 func generate_brick_shapes(shape, area = def_area):
 	var newBrick
-	var life = get_node("Life")
+	
 	#Solid brick: Enough said
 	#Rings: Skip only odds/evens
 	#Axis: Only show when one coord is zero, or both are equal
@@ -203,11 +206,13 @@ func generate_brick_shapes(shape, area = def_area):
 		for x in range(-area.x,area.x + 1):
 			for y in range(0,area.y):
 				if y % 2 == 0 || x % 2 == 0:
-					newBrick = BRICK.instance()
-					newBrick.get_node("Label").text = str(x) + ", " + str(y)
+					newBrick = new_brick(x,y)
 					self.add_child_below_node(life,newBrick)
-					newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
-					newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
+#					newBrick = BRICK.instance()
+#					newBrick.get_node("Label").text = str(x) + ", " + str(y)
+#					self.add_child_below_node(life,newBrick)
+#					newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
+#					newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
 	if shape == "CheckerAlt":
 		for x in range(-area.x,area.x + 1):
 			for y in range(0,area.y):
@@ -239,12 +244,16 @@ func generate_brick_shapes(shape, area = def_area):
 		for x in range(-area.x,area.x + 1):
 			for y in range(0,area.y):
 				if (abs(x) > y) || abs(x) > (area.y - (y+1)):
-					newBrick = BRICK.instance()
-					newBrick.get_node("Label").text = str(x) + ", " + str(y)
-					self.add_child_below_node(life,newBrick)
-					newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
-					newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
-	
+					new_brick(x,y)
+					
+
+func new_brick(x, y):
+	var newBrick = PHANTOM.instance()
+	#newBrick.get_node("Brick/Label").text = str(x) + ", " + str(y)
+	newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
+	newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
+	self.add_child_below_node(life,newBrick)
+	#newBrick.get_node("AnimationPlayer").play("create")
 
 func _on_Life_body_exited(body):
 	pass # Replace with function body.

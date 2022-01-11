@@ -11,7 +11,7 @@ func _ready():
 		musicAudio.play()
 	$DelayTimer.start()
 	get_node("Transition").fade_in()
-	get_node("PauseDialog/MarginContainer/VBoxContainer/QuitToMainButton").visible = false
+	get_node("Camera2D/CanvasLayer/PauseDialog/MarginContainer/VBoxContainer/BackToMenu").visible = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -28,7 +28,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 
 
 func _on_SettingsButton_pressed():
-	get_node("PauseDialog").popup_centered()
+	get_node("Camera2D/CanvasLayer/PauseDialog").popup_centered()
 
 
 func _on_NewGameButton_pressed():

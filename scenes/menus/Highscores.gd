@@ -33,7 +33,6 @@ func _ready():
 	get_node("Transition").fade_in()
 
 func display_scores():
-	print(scores)
 	var index = 0
 	for child in grid.get_children():
 		if !child.is_in_group("Label"):
@@ -67,7 +66,6 @@ func load_scores(difficulty):
 			var player = getFile.get_var()
 			var score = getFile.get_var()
 			scores.append([player, score])
-	print(scores_file)
 	getFile.close()
 	if len(scores) < 10:
 		for i in range(len(scores),10):
@@ -103,25 +101,21 @@ func save_score(new_text):
 
 
 func _on_Easier_pressed():
-	print("easy pressed")
 	load_scores(0)
 	display_scores()
 
 
 func _on_Medium_pressed():
-	print("medium pressed")
 	load_scores(1)
 	display_scores()
 
 
 func _on_Harder_pressed():
-	print("hard pressed")
 	load_scores(2)
 	display_scores()
 
 
 func _on_LineEdit_text_entered(new_text):
-	print(new_text)
 	get_node("NewHighscore").hide()
 	save_score(new_text)
 

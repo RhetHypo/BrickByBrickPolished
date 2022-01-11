@@ -46,7 +46,12 @@ func _on_Ball_body_entered(body):
 		temp_speed += ((settings.difficulty+1)*2)
 		if temp_speed > max_temp_speed:
 			temp_speed = max_temp_speed
+		var parent = body.get_parent()
+		var anim = parent.get_node("AnimationPlayer")
 		body.queue_free()
+		anim.play("break")
+		yield(anim, "animation_finished")
+		parent.queue_free()
 	else:
 		if settings.sound_enabled:
 			wallAudio.volume_db = settings.sound_level - 50

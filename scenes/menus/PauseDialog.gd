@@ -1,6 +1,7 @@
 extends PopupDialog
 
-onready var musicAudio = get_parent().get_node("musicPlayer")
+onready var actual_parent = get_parent().get_parent().get_parent()
+onready var musicAudio = actual_parent.get_node("musicPlayer")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -65,6 +66,6 @@ func _on_DifficultyOptions_item_selected(ID):
 	update_settings()
 
 
-func _on_QuitToMainButton_pressed():
+func _on_BackToMenu_pressed():
 	get_tree().paused = false
-	get_parent().get_node("Transition").switch_scene("res://scenes/menus/MainTitle.tscn")
+	actual_parent.get_node("Transition").switch_scene("res://scenes/menus/MainTitle.tscn")
