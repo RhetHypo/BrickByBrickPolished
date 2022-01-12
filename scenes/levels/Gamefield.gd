@@ -40,7 +40,10 @@ func _ready():
 	if settings.music_enabled:
 		musicAudio.volume_db = settings.music_level - 50
 		musicAudio.play()
-	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	if settings.control_scheme == 0:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+	else:
+		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	generate_bricks()
 	update_points(points, points)
 	update_level(level)
@@ -172,7 +175,10 @@ func pause_game():
 
 func _on_PauseDialog_popup_hide():
 	get_tree().paused = false
-	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	if settings.control_scheme == 0:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+	else:
+		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
 func init_settings():
 	get_node("Camera2D/CanvasLayer/PauseDialog/MarginContainer/VBoxContainer/DifficultyOptions").visible = false
