@@ -5,7 +5,7 @@
 [ext_resource path="res://scenes/entities/Paddle.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/entities/Wall.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/entities/Life.tscn" type="PackedScene" id=5]
-[ext_resource path="res://other/long_shot/Long_Shot.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://other/american_captain/American Captain.ttf" type="DynamicFontData" id=6]
 [ext_resource path="res://scenes/menus/PauseDialog.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/menus/Transition.tscn" type="PackedScene" id=8]
 [ext_resource path="res://audio/death.wav" type="AudioStream" id=9]
@@ -38,6 +38,7 @@ size = 32
 font_data = ExtResource( 6 )
 
 [sub_resource type="DynamicFont" id=7]
+size = 32
 font_data = ExtResource( 6 )
 
 [node name="Gamefield" type="Node2D"]
@@ -94,53 +95,51 @@ margin_bottom = 584.0
 alignment = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/CanvasLayer/MarginContainer/VBoxContainer"]
-visible = false
-margin_top = 550.0
+margin_top = 536.0
 margin_right = 992.0
 margin_bottom = 568.0
 alignment = 1
 
 [node name="Score" type="Label" parent="Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 156.0
-margin_right = 380.0
-margin_bottom = 18.0
+margin_left = 80.0
+margin_right = 304.0
+margin_bottom = 32.0
 rect_min_size = Vector2( 224, 0 )
 custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Score: 999,999"
+text = "Score = 999,999"
 align = 1
 
 [node name="Level" type="Label" parent="Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 384.0
-margin_right = 608.0
-margin_bottom = 18.0
+margin_left = 308.0
+margin_right = 532.0
+margin_bottom = 32.0
 rect_min_size = Vector2( 224, 0 )
 theme = SubResource( 4 )
 custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Level: 99"
+text = "Level = 99"
 align = 1
 
 [node name="Lives" type="Label" parent="Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 612.0
-margin_right = 836.0
-margin_bottom = 18.0
+margin_left = 536.0
+margin_right = 760.0
+margin_bottom = 32.0
 rect_min_size = Vector2( 224, 0 )
 custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Lives: 99"
+text = "Lives = 99"
 align = 1
 
 [node name="Speed" type="Label" parent="Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
-visible = false
-margin_left = 612.0
-margin_right = 652.0
-margin_bottom = 14.0
+margin_left = 764.0
+margin_right = 911.0
+margin_bottom = 32.0
 custom_fonts/font = SubResource( 7 )
-text = "Speed: 0"
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Speed = 9.99x"
 
 [node name="PauseDialog" parent="Camera2D/CanvasLayer" instance=ExtResource( 7 )]
-visible = true
 margin_left = 262.0
 margin_top = -56.0
 margin_right = 512.0

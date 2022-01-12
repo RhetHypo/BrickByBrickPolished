@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://other/long_shot/Long_Shot.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://other/american_captain/American Captain.ttf" type="DynamicFontData" id=1]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32

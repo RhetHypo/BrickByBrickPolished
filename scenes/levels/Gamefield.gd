@@ -50,6 +50,7 @@ func _ready():
 	update_points(points, points)
 	update_level(level)
 	update_lives(lives)
+	update_speed_label(active_speed)
 	settings.load_settings()
 	init_settings()
 	get_node("Transition").fade_in()
@@ -140,11 +141,12 @@ func level_check():
 		for child in self.get_children():
 			if child.is_in_group("Ball"):
 				child.call_deferred("queue_free")
-				#active_speed = def_speed + (level * def_speed/(15-settings.difficulty*4))
-				#if active_speed > max_speed:
-				#	active_speed = max_speed
+				active_speed = def_speed + (level * def_speed/(15-settings.difficulty*4))
+				if active_speed > max_speed:
+					active_speed = max_speed
 				#child.update_speed(active_speed)
 		get_node("Paddle").newLife()
+		update_speed_label(active_speed)
 		#TODO: Make this more dynamic, and progress through levels
 
 func award_points(newPoints):
@@ -153,7 +155,7 @@ func award_points(newPoints):
 
 func update_lives(newLives):
 	var lives = get_node("Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Lives")
-	lives.text = "Lives: " + str(newLives)
+	lives.text = "Lives = " + str(newLives)
 
 func update_points(points, newPoints):
 	
@@ -162,18 +164,18 @@ func update_points(points, newPoints):
 		yield(get_node("PointTimer"), "timeout")
 		get_node("PointTimer").stop()
 		var display_points = get_node("Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Score")
-		display_points.text = "Points: " + str(i)
+		display_points.text = "Points = " + str(i)
 	
 	var display_points = get_node("Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Score")
-	display_points.text = "Points: " + str(points)
+	display_points.text = "Points = " + str(points)
 
 func update_level(newLevel):
 	var level = get_node("Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Level")
-	level.text = "Level " + str(newLevel)
+	level.text = "Level = " + str(newLevel)
 
 func update_speed_label(ball_speed):
 	var speed_label = get_node("Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Speed")
-	speed_label.text = "Speed: " + str(ball_speed)
+	speed_label.text = "Speed = " + str(stepify(ball_speed/def_speed,0.1)) + "x"
 
 func _on_CompleteCheck_timeout():
 	level_check()

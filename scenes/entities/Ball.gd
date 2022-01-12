@@ -50,7 +50,7 @@ func _on_Ball_body_entered(body):
 				combo = 5
 			breakAudio.play()
 		get_parent().award_points(10)
-		temp_speed += ((settings.difficulty+1)*2)
+		temp_speed += ((settings.difficulty+1)*5)
 		if temp_speed > max_temp_speed:
 			temp_speed = max_temp_speed
 		var parent = body.get_parent()
