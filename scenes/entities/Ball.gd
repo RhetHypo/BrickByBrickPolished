@@ -8,6 +8,7 @@ var max_temp_speed = 2000
 var paddle_width = 512
 
 var angle_cap = 0.75
+var combo = 0
 
 onready var breakAudio = get_node("breakPlayer")
 onready var paddleAudio = get_node("paddlePlayer")
@@ -36,11 +37,17 @@ func _on_Ball_body_entered(body):
 	if body.is_in_group("Paddle"):
 		if settings.sound_enabled:
 			paddleAudio.volume_db = settings.sound_level - 50
+			paddleAudio.pitch_scale = rand_range(0.90,1.1)
 			paddleAudio.play()
+			combo = 0
 		self.apply_central_impulse(Vector2(current_speed * 2 * (self.position.x - body.position.x)/paddle_width,0))
 	elif body.is_in_group("Brick"):
 		if settings.sound_enabled:
 			breakAudio.volume_db = settings.sound_level - 50
+			breakAudio.pitch_scale = 1.5 + combo
+			combo += .10
+			if combo >= 5:
+				combo = 5
 			breakAudio.play()
 		get_parent().award_points(10)
 		temp_speed += ((settings.difficulty+1)*2)
@@ -58,6 +65,7 @@ func _on_Ball_body_entered(body):
 	else:
 		if settings.sound_enabled:
 			wallAudio.volume_db = settings.sound_level - 50
+			wallAudio.pitch_scale = rand_range(1.5,3.0)
 			wallAudio.play()
 
 func death():
