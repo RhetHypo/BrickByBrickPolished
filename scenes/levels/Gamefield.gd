@@ -126,6 +126,7 @@ func award_lives(newLives):
 		#TODO: Actual game over screen
 
 func level_check():
+	var z: float = ( 1.0 )
 	#quick and dirty spedometer
 	for child in self.get_children():
 		if child.is_in_group("Ball"):

@@ -47,7 +47,8 @@ func _process(delta):
 		self.position.x = 275
 	if(self.position.x >= 1760):
 		self.position.x = 1760
-	
+	if Input.is_action_just_pressed("upgrade_test"):
+		self.upgrade(1)
 
 func start():
 	if !started:
@@ -62,4 +63,17 @@ func start():
 func newLife():
 	started = false
 	self.get_node("StartBall").visible = true
+
+func upgrade(upgrade = 1):
+	if upgrade == 1:
+		print(1)
+		for child in get_parent().get_children():
+			if child.is_in_group("Ball"):
+				var newBall = BALL.instance()
+				newBall.global_position = child.global_position
+				newBall.apply_central_impulse(Vector2(-500,0))
+				child.apply_central_impulse(Vector2(500,0))
+				self.get_parent().add_child(newBall)
+	elif upgrade == 2:
+		print(2)
 	
