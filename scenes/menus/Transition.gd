@@ -14,8 +14,6 @@ func switch_scene(new_scene):
 func fade_in():
 	self.visible = true
 	tween.interpolate_property(panel, "modulate:a", 1, 0, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	print("Starting tween")
 	tween.start()
 	yield(tween, "tween_completed")
-	print("Tween completed")
 	self.visible = false

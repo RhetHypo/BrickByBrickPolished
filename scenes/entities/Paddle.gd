@@ -5,6 +5,7 @@ var speed = 1500
 var non_turbo = 1
 var applied_turbo = non_turbo
 var turbo = 2
+var ballsInPlay = 0
 
 const BALL = preload("res://scenes/entities/Ball.tscn")
 
@@ -59,21 +60,25 @@ func start():
 		newBall.linear_velocity.y = -get_parent().active_speed
 		self.get_node("StartBall").visible = false
 		self.get_parent().add_child(newBall)
+		ballsInPlay = 1
 
 func newLife():
 	started = false
 	self.get_node("StartBall").visible = true
+	ballsInPlay = 0
 
 func upgrade(upgrade = 1):
 	if upgrade == 1:
-		print(1)
 		for child in get_parent().get_children():
 			if child.is_in_group("Ball"):
 				var newBall = BALL.instance()
 				newBall.global_position = child.global_position
-				newBall.apply_central_impulse(Vector2(-500,0))
+				newBall.current_speed = child.current_speed
+				newBall.temp_speed = child.temp_speed
+				newBall.apply_central_impulse(Vector2(-500,child.linear_velocity.y))
 				child.apply_central_impulse(Vector2(500,0))
 				self.get_parent().add_child(newBall)
+				ballsInPlay += 1
 	elif upgrade == 2:
 		print(2)
 	

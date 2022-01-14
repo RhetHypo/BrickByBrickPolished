@@ -35,6 +35,7 @@ onready var life = get_node("Life")
 onready var camera = get_node("Camera2D")
 onready var deathAudio = get_node("deathPlayer")
 onready var musicAudio = get_node("musicPlayer")
+onready var paddle = get_node("Paddle")
 
 var thread
 
@@ -106,6 +107,12 @@ func generate_brick_list(bricks = def_bricks):
 		self.add_child(newBrick)
 		newBrick.global_position = brick
 
+func dropped_ball():
+	if paddle.ballsInPlay == 1:
+		award_lives(-1)
+		add_shaking(.25)
+	paddle.ballsInPlay -= 1
+
 func award_lives(newLives):
 	lives += newLives
 	update_lives(lives)
@@ -113,7 +120,7 @@ func award_lives(newLives):
 		if settings.sound_enabled:
 			deathAudio.volume_db = settings.sound_level - 50
 			deathAudio.play()
-		get_node("Paddle").newLife()
+		paddle.newLife()
 	elif lives <= 0:
 		globals.endgame = true
 		globals.endgame_score = points
@@ -146,7 +153,7 @@ func level_check():
 				if active_speed > max_speed:
 					active_speed = max_speed
 				#child.update_speed(active_speed)
-		get_node("Paddle").newLife()
+		paddle.newLife()
 		update_speed_label(active_speed)
 		#TODO: Make this more dynamic, and progress through levels
 
