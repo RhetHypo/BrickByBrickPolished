@@ -6,9 +6,11 @@ var current_speed = 500
 var temp_speed = 0
 var max_temp_speed = 2000
 var paddle_width = 512
+var temp_alive = false
 
 var angle_cap = 0.75
 var combo = 0
+var laser = false
 
 onready var breakAudio = get_node("breakPlayer")
 onready var paddleAudio = get_node("paddlePlayer")
@@ -40,6 +42,11 @@ func _on_Ball_body_entered(body):
 			paddleAudio.pitch_scale = rand_range(0.90,1.1)
 			paddleAudio.play()
 			combo = 0
+		if body.isSticky:
+			self.temp_alive = true
+			body.newBall(self.global_position.x - body.global_position.x)
+			self.call_deferred("queue_free")
+			
 		self.apply_central_impulse(Vector2(current_speed * 2 * (self.position.x - body.position.x)/paddle_width,0))
 	elif body.is_in_group("Brick"):
 		if settings.sound_enabled:
@@ -55,13 +62,13 @@ func _on_Ball_body_entered(body):
 			temp_speed = max_temp_speed
 		var parent = body.get_parent()
 		var anim = parent.get_node("AnimationPlayer")
-		body.queue_free()
+		body.call_deferred("queue_free")
 		parent.get_node("Tween").interpolate_property(parent, "position:x", parent.position.x, parent.position.x + (parent.position.x-self.position.x)*10, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		parent.get_node("Tween").interpolate_property(parent, "position:y", parent.position.y, parent.position.y + (parent.position.y-self.position.y)*10, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		parent.get_node("Tween").start()
 		anim.play("break")
 		yield(anim, "animation_finished")
-		parent.queue_free()
+		parent.call_deferred("queue_free")
 	else:
 		if settings.sound_enabled:
 			wallAudio.volume_db = settings.sound_level - 50

@@ -139,10 +139,14 @@ func level_check():
 		if child.is_in_group("Ball"):
 			update_speed_label(child.linear_velocity.length())
 	var complete = true
+	print("is complete?")
 	for child in self.get_children():
-		if child.is_in_group("Brick"):
+		if child.is_in_group("Brick") and child.get_node_or_null("Brick") != null:
 			complete = false
+			print("no")
+			print(child.name)
 	if complete:
+		print("yes")
 		level += 1
 		update_level(level)
 		generate_bricks()
@@ -186,6 +190,7 @@ func update_speed_label(ball_speed):
 	speed_label.text = "Speed = " + str(stepify(ball_speed/def_speed,0.1)) + "x"
 
 func _on_CompleteCheck_timeout():
+	print("checking level")
 	level_check()
 
 func pause_game():
