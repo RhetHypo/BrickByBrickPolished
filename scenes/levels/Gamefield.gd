@@ -27,6 +27,7 @@ export var max_roll = 0.5
 var shaking = 0.0
 var shake_amount = 0.25
 export var shapes = ["Grid", "RevTri", "CheckerSame", "Tri", "CheckerAlt"]
+var upgradeable_bricks = []
 
 const BRICK = preload("res://scenes/entities/Brick.tscn")
 const PHANTOM = preload("res://scenes/entities/Phantom.tscn")
@@ -38,6 +39,7 @@ onready var musicAudio = get_node("musicPlayer")
 onready var paddle = get_node("Paddle")
 
 var thread
+var random = RandomNumberGenerator.new()
 
 func _ready():
 	if settings.music_enabled:
@@ -47,6 +49,7 @@ func _ready():
 		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	random.randomize()
 	generate_bricks()
 	update_points(points, points)
 	update_level(level)
@@ -81,6 +84,7 @@ func generate_bricks():
 		#generate(shapes[(level - 1) % len(shapes)])
 	if thread_error:
 		print("Thread error!")
+	
 func add_shaking(amount):
     shaking = min(shaking + amount, 1.0)
 
@@ -99,6 +103,7 @@ func generate_brick_area(area = def_area):
 			self.add_child_below_node(life,newBrick)
 			newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
 			newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
+	add_upgrades()
 
 func generate_brick_list(bricks = def_bricks):
 	var newBrick
@@ -106,6 +111,7 @@ func generate_brick_list(bricks = def_bricks):
 		newBrick = BRICK.instance()
 		self.add_child(newBrick)
 		newBrick.global_position = brick
+	add_upgrades()
 
 func dropped_ball():
 	if paddle.ballsInPlay == 1:
@@ -149,10 +155,14 @@ func level_check():
 		for child in self.get_children():
 			if child.is_in_group("Ball"):
 				child.call_deferred("queue_free")
-				active_speed = def_speed + (level * def_speed/(15-settings.difficulty*4))
-				if active_speed > max_speed:
-					active_speed = max_speed
 				#child.update_speed(active_speed)
+			if child.is_in_group("Bullet"):
+				child.call_deferred("queue_free")
+			if child.is_in_group("Powerup"):
+				child.call_deferred("queue_free")
+		active_speed = def_speed + (level * def_speed/(15-settings.difficulty*4))
+		if active_speed > max_speed:
+			active_speed = max_speed
 		for child in paddle.get_children():
 			if child.is_in_group("Stuck"):
 				child.call_deferred("queue_free")
@@ -246,16 +256,24 @@ func generate_brick_shapes(shape, area = def_area):
 			for y in range(0,area.y):
 				if (abs(x) > y) || abs(x) > (area.y - (y+1)):
 					self.call_deferred("new_brick",x,y)
-					
+	self.call_deferred("add_upgrades")
 
 func new_brick(x, y):
 	var newBrick = PHANTOM.instance()
 	newBrick.get_node("Brick/Label").text = str(x) + ", " + str(y)
 	newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
 	newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
+	upgradeable_bricks.append(newBrick)
 	self.add_child_below_node(life,newBrick)
 	newBrick.get_node("AnimationPlayer").play("create")
 	yield(newBrick.get_node("AnimationPlayer"),"animation_finished")
+
+func add_upgrades():
+	var total_upgrades = 5
+	for i in range(0,total_upgrades):
+		var select_brick = rand_range(0,upgradeable_bricks.size())
+		upgradeable_bricks[select_brick].add_to_group("Powerup")
+	upgradeable_bricks.clear()
 
 func _on_Life_body_exited(body):
 	pass # Replace with function body.

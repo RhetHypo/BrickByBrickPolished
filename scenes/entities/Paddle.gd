@@ -6,14 +6,17 @@ var non_turbo = 1
 var applied_turbo = non_turbo
 var turbo = 2
 var ballsInPlay = 0
-var isSticky = true
+var isSticky = false
+var laser = false
 var paddle_width = 512 #idk
 
 const BALL = preload("res://scenes/entities/Ball.tscn")
 const STARTBALL = preload("res://scenes/entities/StartBall.tscn")
 
+var get_color
+
 func _ready():
-	pass
+	get_color = self.get_node("Sprite").modulate
 
 func _process(delta):
 	#var pos = 0
@@ -51,8 +54,8 @@ func _process(delta):
 		self.position.x = 275
 	if(self.position.x >= 1760):
 		self.position.x = 1760
-	if Input.is_action_just_pressed("upgrade_test"):
-		self.upgrade(1)
+	#if Input.is_action_just_pressed("upgrade_test"):
+	#	self.upgrade(1)
 
 func start():
 	if !started:
@@ -64,7 +67,7 @@ func start():
 			newBall.global_position = child.global_position
 			newBall.current_speed = get_parent().active_speed
 			newBall.linear_velocity.y = -get_parent().active_speed
-			newBall.laser = true
+			newBall.laser = self.laser
 			newBall.temp_speed = child.temp_speed
 			newBall.apply_central_impulse(Vector2(get_parent().active_speed * 2 * (newBall.position.x - self.position.x)/paddle_width,0))
 			child.call_deferred("queue_free")
@@ -80,6 +83,9 @@ func newLife():
 	newBall.position = Vector2(0,-64)
 	self.add_child(newBall)
 	ballsInPlay = 0
+	self.isSticky = false
+	self.laser = false
+	self.get_node("Sprite").modulate = get_color
 
 func newBall(ball):
 	var newBall = STARTBALL.instance()
@@ -113,11 +119,13 @@ func upgrade(upgrade = 1):
 				self.add_child(newBall)
 				ballsInPlay += 1
 	elif upgrade == 2:
-		print(2)
 		self.isSticky = true
+		self.get_node("Sprite").modulate = Color(0,1,0,1)
 	elif upgrade == 3:
-		print(3)
+		self.laser = true
 		for child in get_parent().get_children():
 			if child.is_in_group("Ball"):
+				child.unlock_laser()
+		for child in get_children():
+			if child.is_in_group("Stuck"):
 				child.laser = true
-	

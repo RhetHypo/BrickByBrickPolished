@@ -7,7 +7,9 @@
 radius = 17.0944
 height = 22.6951
 
-[node name="Bullet" type="RigidBody2D"]
+[node name="Bullet" type="RigidBody2D" groups=[
+"Bullet",
+]]
 collision_mask = 0
 gravity_scale = 0.0
 contacts_reported = 1

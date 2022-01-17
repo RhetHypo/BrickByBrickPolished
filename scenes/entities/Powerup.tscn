@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/entities/Powerup.gd" type="Script" id=1]
+[ext_resource path="res://images/powerup.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 32.0956, 31.9557 )
+
+[node name="Powerup" type="Area2D" groups=[
+"Powerup",
+]]
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 20.0
+[connection signal="body_entered" from="." to="." method="_on_Powerup_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

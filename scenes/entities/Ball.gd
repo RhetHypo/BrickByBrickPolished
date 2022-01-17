@@ -12,7 +12,7 @@ var angle_cap = 0.75
 var combo = 0
 
 #these need to persist between bounces
-var laser = true
+var laser = false
 var temp_speed = 0
 
 onready var breakAudio = get_node("breakPlayer")
@@ -63,19 +63,19 @@ func _on_Ball_body_entered(body):
 			if combo >= 5:
 				combo = 5
 			breakAudio.play()
-		get_parent().award_points(10)
 		temp_speed += ((settings.difficulty+1)*5)
 		if temp_speed > max_temp_speed:
 			temp_speed = max_temp_speed
-		var parent = body.get_parent()
-		var anim = parent.get_node("AnimationPlayer")
-		body.call_deferred("queue_free")
-		parent.get_node("Tween").interpolate_property(parent, "position:x", parent.position.x, parent.position.x + (parent.position.x-self.position.x)*10, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		parent.get_node("Tween").interpolate_property(parent, "position:y", parent.position.y, parent.position.y + (parent.position.y-self.position.y)*10, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		parent.get_node("Tween").start()
-		anim.play("break")
-		yield(anim, "animation_finished")
-		parent.call_deferred("queue_free")
+		body.get_parent().brick_break(self.position)
+#		var parent = body.get_parent()
+#		var anim = parent.get_node("AnimationPlayer")
+#		body.call_deferred("queue_free")
+#		parent.get_node("Tween").interpolate_property(parent, "position:x", parent.position.x, parent.position.x + (parent.position.x-self.position.x)*10, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+#		parent.get_node("Tween").interpolate_property(parent, "position:y", parent.position.y, parent.position.y + (parent.position.y-self.position.y)*10, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+#		parent.get_node("Tween").start()
+#		anim.play("break")
+#		yield(anim, "animation_finished")
+#		parent.call_deferred("queue_free")
 	else:
 		if settings.sound_enabled:
 			wallAudio.volume_db = settings.sound_level - 50
@@ -88,16 +88,13 @@ func unlock_laser():
 
 func blast():
 	if just_released:
-		print("release")
 		just_released = false
 		return
 	elif laser:
-		print("laser")
 		var newBullet = BULLET.instance()
 		get_parent().add_child(newBullet)
 		newBullet.global_position = blaster.get_node("Blaster/SpawnPoint").global_position
 		var angle = blaster.rotation_degrees
-		print(angle)
 		newBullet.rotation_degrees = angle
 		newBullet.apply_central_impulse(Vector2(cos(deg2rad(angle)), sin(deg2rad(angle))) * 2000)
 		return
