@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scenes/levels/Gamefield.gd" type="Script" id=1]
 [ext_resource path="res://images/GameBackground.png" type="Texture" id=2]
@@ -6,10 +6,11 @@
 [ext_resource path="res://scenes/entities/Wall.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/entities/Life.tscn" type="PackedScene" id=5]
 [ext_resource path="res://other/american_captain/American Captain.ttf" type="DynamicFontData" id=6]
-[ext_resource path="res://scenes/menus/PauseDialog.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/menus/Transition.tscn" type="PackedScene" id=8]
-[ext_resource path="res://audio/death.wav" type="AudioStream" id=9]
-[ext_resource path="res://audio/KillingTime.wav" type="AudioStream" id=10]
+[ext_resource path="res://scenes/menus/LevelTransition.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/menus/PauseDialog.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/menus/Transition.tscn" type="PackedScene" id=9]
+[ext_resource path="res://audio/death.wav" type="AudioStream" id=10]
+[ext_resource path="res://audio/KillingTime.wav" type="AudioStream" id=11]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -139,7 +140,15 @@ custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Speed = 9.99x"
 
-[node name="PauseDialog" parent="Camera2D/CanvasLayer" instance=ExtResource( 7 )]
+[node name="LevelTransition" parent="Camera2D/CanvasLayer/MarginContainer" instance=ExtResource( 7 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 1008.0
+margin_bottom = 584.0
+
+[node name="PauseDialog" parent="Camera2D/CanvasLayer" instance=ExtResource( 8 )]
 margin_left = 262.0
 margin_top = -56.0
 margin_right = 512.0
@@ -151,16 +160,16 @@ autostart = true
 [node name="PointTimer" type="Timer" parent="."]
 wait_time = 0.05
 
-[node name="Transition" parent="." instance=ExtResource( 8 )]
+[node name="Transition" parent="." instance=ExtResource( 9 )]
 visible = false
 margin_right = 2048.0
 margin_bottom = 2048.0
 rect_min_size = Vector2( 2048, 2048 )
 
 [node name="deathPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 9 )
+stream = ExtResource( 10 )
 
 [node name="musicPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 10 )
+stream = ExtResource( 11 )
 [connection signal="popup_hide" from="Camera2D/CanvasLayer/PauseDialog" to="." method="_on_PauseDialog_popup_hide"]
 [connection signal="timeout" from="CompleteCheck" to="." method="_on_CompleteCheck_timeout"]

@@ -37,6 +37,7 @@ onready var camera = get_node("Camera2D")
 onready var deathAudio = get_node("deathPlayer")
 onready var musicAudio = get_node("musicPlayer")
 onready var paddle = get_node("Paddle")
+onready var levelTransition = get_node("Camera2D/CanvasLayer/MarginContainer/LevelTransition")
 
 var thread
 var random = RandomNumberGenerator.new()
@@ -151,7 +152,6 @@ func level_check():
 	if complete:
 		level += 1
 		update_level(level)
-		generate_bricks()
 		for child in self.get_children():
 			if child.is_in_group("Ball"):
 				child.call_deferred("queue_free")
@@ -168,6 +168,8 @@ func level_check():
 				child.call_deferred("queue_free")
 		paddle.newLife()
 		update_speed_label(active_speed)
+		levelTransition.next_level(level)
+		generate_bricks()
 		#TODO: Make this more dynamic, and progress through levels
 
 func award_points(newPoints):
@@ -269,7 +271,7 @@ func new_brick(x, y):
 	yield(newBrick.get_node("AnimationPlayer"),"animation_finished")
 
 func add_upgrades():
-	var total_upgrades = 5
+	var total_upgrades = (4 - settings.difficulty) * 2
 	for i in range(0,total_upgrades):
 		var select_brick = rand_range(0,upgradeable_bricks.size())
 		upgradeable_bricks[select_brick].add_to_group("Powerup")
