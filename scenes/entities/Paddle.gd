@@ -72,6 +72,8 @@ func start():
 				newBall.global_position = child.global_position
 				newBall.current_speed = get_parent().active_speed
 				newBall.linear_velocity.y = -get_parent().active_speed
+				newBall.laser = child.laser
+				newBall.temp_speed = child.temp_speed
 				newBall.apply_central_impulse(Vector2(get_parent().active_speed * 2 * (newBall.position.x - self.position.x)/paddle_width,0))
 				child.call_deferred("queue_free")
 				self.get_parent().add_child(newBall)
@@ -84,10 +86,12 @@ func newLife():
 	self.add_child(newBall)
 	ballsInPlay = 0
 
-func newBall(position):
+func newBall(ball):
 	var newBall = STARTBALL.instance()
-	newBall.position.x = position
+	newBall.position.x = ball.global_position.x - self.global_position.x
 	newBall.position.y = -64
+	newBall.laser = ball.laser
+	newBall.temp_speed = ball.temp_speed
 	self.add_child(newBall)
 
 func upgrade(upgrade = 1):
@@ -102,6 +106,16 @@ func upgrade(upgrade = 1):
 				newBall.apply_central_impulse(Vector2(-500,child.linear_velocity.y))
 				child.apply_central_impulse(Vector2(500,0))
 				self.get_parent().add_child(newBall)
+				ballsInPlay += 1
+		for child in get_children():
+			if child.is_in_group("Stuck"):
+				var newBall = STARTBALL.instance()
+				newBall.laser = child.laser
+				newBall.temp_speed = child.temp_speed
+				newBall.position.x = child.position.x - 20
+				newBall.position.y = child.position.y
+				child.position.x += 20
+				self.add_child(newBall)
 				ballsInPlay += 1
 	elif upgrade == 2:
 		print(2)

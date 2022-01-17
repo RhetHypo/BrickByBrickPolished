@@ -3,14 +3,16 @@ extends RigidBody2D
 var x_speed = 0
 var y_speed = 0
 var current_speed = 500
-var temp_speed = 0
 var max_temp_speed = 2000
 var paddle_width = 512
 var temp_alive = false
 
 var angle_cap = 0.75
 var combo = 0
+
+#these need to persist between bounces
 var laser = false
+var temp_speed = 0
 
 onready var breakAudio = get_node("breakPlayer")
 onready var paddleAudio = get_node("paddlePlayer")
@@ -44,7 +46,7 @@ func _on_Ball_body_entered(body):
 			combo = 0
 		if body.isSticky:
 			self.temp_alive = true
-			body.newBall(self.global_position.x - body.global_position.x)
+			body.newBall(self)
 			self.call_deferred("queue_free")
 			
 		self.apply_central_impulse(Vector2(current_speed * 2 * (self.position.x - body.position.x)/paddle_width,0))
