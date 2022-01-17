@@ -57,26 +57,21 @@ func _process(delta):
 func start():
 	if !started:
 		started = true
-		var newBall = BALL.instance()
-		newBall.global_position = self.get_node("StartBall").global_position
-		newBall.current_speed = get_parent().active_speed
-		newBall.linear_velocity.y = -get_parent().active_speed
-		#self.get_node("StartBall").visible = false
-		self.get_node("StartBall").call_deferred("queue_free")
-		self.get_parent().add_child(newBall)
 		ballsInPlay = 1
-	else:
-		for child in self.get_children():
-			if child.is_in_group("Stuck"):
-				var newBall = BALL.instance()
-				newBall.global_position = child.global_position
-				newBall.current_speed = get_parent().active_speed
-				newBall.linear_velocity.y = -get_parent().active_speed
-				newBall.laser = child.laser
-				newBall.temp_speed = child.temp_speed
-				newBall.apply_central_impulse(Vector2(get_parent().active_speed * 2 * (newBall.position.x - self.position.x)/paddle_width,0))
-				child.call_deferred("queue_free")
-				self.get_parent().add_child(newBall)
+	for child in self.get_children():
+		if child.is_in_group("Stuck"):
+			var newBall = BALL.instance()
+			newBall.global_position = child.global_position
+			newBall.current_speed = get_parent().active_speed
+			newBall.linear_velocity.y = -get_parent().active_speed
+			newBall.laser = true
+			newBall.temp_speed = child.temp_speed
+			newBall.apply_central_impulse(Vector2(get_parent().active_speed * 2 * (newBall.position.x - self.position.x)/paddle_width,0))
+			child.call_deferred("queue_free")
+			self.get_parent().add_child(newBall)
+	for child in get_parent().get_children():
+		if child.is_in_group("Ball"):
+			child.blast()
 
 func newLife():
 	started = false

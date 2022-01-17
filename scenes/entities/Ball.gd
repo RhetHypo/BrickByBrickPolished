@@ -6,23 +6,28 @@ var current_speed = 500
 var max_temp_speed = 2000
 var paddle_width = 512
 var temp_alive = false
+var just_released = true
 
 var angle_cap = 0.75
 var combo = 0
 
 #these need to persist between bounces
-var laser = false
+var laser = true
 var temp_speed = 0
 
 onready var breakAudio = get_node("breakPlayer")
 onready var paddleAudio = get_node("paddlePlayer")
 onready var wallAudio = get_node("wallPlayer")
+onready var blaster = get_node("BlasterPivot")
+
+const BULLET = preload("res://scenes/entities/Bullet.tscn")
 
 func _ready():
-	pass
+	if laser:
+		unlock_laser()
 
 func _physics_process(delta):
-	pass
+	blaster.rotation_degrees += delta * 360
 
 func _integrate_forces(state):
 	if state.linear_velocity.length()!=current_speed+temp_speed:
@@ -76,6 +81,26 @@ func _on_Ball_body_entered(body):
 			wallAudio.volume_db = settings.sound_level - 50
 			wallAudio.pitch_scale = rand_range(1.5,3.0)
 			wallAudio.play()
+
+func unlock_laser():
+	laser = true
+	blaster.visible = true
+
+func blast():
+	if just_released:
+		print("release")
+		just_released = false
+		return
+	elif laser:
+		print("laser")
+		var newBullet = BULLET.instance()
+		get_parent().add_child(newBullet)
+		newBullet.global_position = blaster.get_node("Blaster/SpawnPoint").global_position
+		var angle = blaster.rotation_degrees
+		print(angle)
+		newBullet.rotation_degrees = angle
+		newBullet.apply_central_impulse(Vector2(cos(deg2rad(angle)), sin(deg2rad(angle))) * 2000)
+		return
 
 func death():
 	#TODO: Add check for if this is the last ball in play, if adding multiple balls

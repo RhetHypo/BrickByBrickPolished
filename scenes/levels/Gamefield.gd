@@ -153,6 +153,9 @@ func level_check():
 				if active_speed > max_speed:
 					active_speed = max_speed
 				#child.update_speed(active_speed)
+		for child in paddle.get_children():
+			if child.is_in_group("Stuck"):
+				child.call_deferred("queue_free")
 		paddle.newLife()
 		update_speed_label(active_speed)
 		#TODO: Make this more dynamic, and progress through levels

@@ -22,7 +22,6 @@ _data = [ Vector2( 0.453924, 93.84 ), 0.0, 0.0, 0, 0, Vector2( 0.684303, 153.9 )
 [node name="Ball" type="RigidBody2D" groups=[
 "Ball",
 ]]
-self_modulate = Color( 0, 0, 0, 1 )
 collision_mask = 0
 physics_material_override = SubResource( 1 )
 gravity_scale = 0.0
@@ -43,7 +42,6 @@ texture = ExtResource( 2 )
 shape = SubResource( 2 )
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-self_modulate = Color( 0, 0, 0, 1 )
 amount = 16
 speed_scale = 5.0
 local_coords = false
@@ -72,4 +70,7 @@ visible = false
 [node name="Blaster" type="Sprite" parent="BlasterPivot"]
 texture = ExtResource( 8 )
 offset = Vector2( 48, 0 )
+
+[node name="SpawnPoint" type="Node2D" parent="BlasterPivot/Blaster"]
+position = Vector2( 72, 0 )
 [connection signal="body_entered" from="." to="." method="_on_Ball_body_entered"]
