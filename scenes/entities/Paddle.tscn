@@ -1,8 +1,14 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/entities/Paddle.gd" type="Script" id=1]
 [ext_resource path="res://images/paddle.png" type="Texture" id=2]
 [ext_resource path="res://scenes/entities/StartBall.tscn" type="PackedScene" id=3]
+[ext_resource path="res://audio/pop.wav" type="AudioStream" id=4]
+[ext_resource path="res://audio/splat.wav" type="AudioStream" id=5]
+[ext_resource path="res://audio/laser.wav" type="AudioStream" id=6]
+[ext_resource path="res://audio/release.wav" type="AudioStream" id=7]
+[ext_resource path="res://audio/stuck.wav" type="AudioStream" id=8]
+[ext_resource path="res://audio/unstuck.wav" type="AudioStream" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 255, 30 )
@@ -33,3 +39,22 @@ position = Vector2( 0.00012207, -43.9521 )
 shape = SubResource( 2 )
 
 [node name="StartBall" parent="." instance=ExtResource( 3 )]
+
+[node name="upgrade1Player" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[node name="upgrade2Player" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+pitch_scale = 2.0
+
+[node name="upgrade3Player" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="startPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
+[node name="stuckPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="unstuckPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )

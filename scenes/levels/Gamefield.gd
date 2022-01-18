@@ -82,7 +82,7 @@ func generate_bricks():
 		#generate_brick_list()
 	elif generate_mode == 3:
 		thread_error = thread.start(self, "generate_brick_shapes", (shapes[(level - 1) % len(shapes)]))
-		#generate(shapes[(level - 1) % len(shapes)])
+		#generate_brick_shapes((shapes[(level - 1) % len(shapes)]))
 	if thread_error:
 		print("Thread error!")
 	
@@ -228,45 +228,52 @@ func generate_brick_shapes(shape, area = def_area):
 		for x in range(-area.x,area.x + 1):
 			for y in range(0,area.y):
 				self.call_deferred("new_brick",x,y)
+				#new_brick(x,y)
 	if shape == "Rings":
 		for x in range(-area.x,area.x + 1):
 			for y in range(0,area.y):
 				if y % 2 == 0 || x == -area.x || x == area.x || y == abs(x):
 					self.call_deferred("new_brick",x,y)
+					#new_brick(x,y)
 	if shape == "Grid":
 		for x in range(-area.x,area.x + 1):
 			for y in range(0,area.y):
 				if y % 2 == 0 || x % 2 == 0:
 					self.call_deferred("new_brick",x,y)
+					#new_brick(x,y)
 	if shape == "CheckerAlt":
 		for x in range(-area.x,area.x + 1):
 			for y in range(0,area.y):
 				if (y % 2 == 0 and x % 2 != 0) or (y % 2 != 0 and x % 2 == 0):
 					self.call_deferred("new_brick",x,y)
+					#new_brick(x,y)
 	if shape == "CheckerSame":
 		for x in range(-area.x,area.x + 1):
 			for y in range(0,area.y):
 				if (y % 2 != 0 and x % 2 != 0) or (y % 2 == 0 and x % 2 == 0):
 					self.call_deferred("new_brick",x,y)
+					#new_brick(x,y)
 	if shape == "Tri":
 		for x in range(-area.x,area.x + 1):
 			for y in range(0,area.y):
 				if (y > abs(x) + 1):
 					self.call_deferred("new_brick",x,y)
+					#new_brick(x,y)
 	if shape == "RevTri":
 		for x in range(-area.x,area.x + 1):
 			for y in range(0,area.y):
 				if (abs(x) > y) || abs(x) > (area.y - (y+1)):
 					self.call_deferred("new_brick",x,y)
+					#new_brick(x,y)
 	self.call_deferred("add_upgrades")
 
 func new_brick(x, y):
 	var newBrick = PHANTOM.instance()
 	newBrick.get_node("Brick/Label").text = str(x) + ", " + str(y)
-	newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
-	newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
 	upgradeable_bricks.append(newBrick)
 	self.add_child_below_node(life,newBrick)
+	newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
+	newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
 	newBrick.get_node("AnimationPlayer").play("create")
 	yield(newBrick.get_node("AnimationPlayer"),"animation_finished")
 

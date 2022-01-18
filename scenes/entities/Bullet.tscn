@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/entities/Bullet.gd" type="Script" id=1]
 [ext_resource path="res://images/bullet.png" type="Texture" id=2]
+[ext_resource path="res://audio/what.wav" type="AudioStream" id=3]
+[ext_resource path="res://audio/Bal.wav" type="AudioStream" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 17.0944
@@ -28,5 +30,13 @@ shape = SubResource( 1 )
 [node name="lifetime" type="Timer" parent="."]
 wait_time = 3.0
 autostart = true
+
+[node name="firePlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+pitch_scale = 3.0
+
+[node name="breakPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+pitch_scale = 1.5
 [connection signal="body_entered" from="." to="." method="_on_Bullet_body_entered"]
 [connection signal="timeout" from="lifetime" to="." method="_on_lifetime_timeout"]

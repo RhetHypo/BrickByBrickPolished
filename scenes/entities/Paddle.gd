@@ -10,6 +10,13 @@ var isSticky = false
 var laser = false
 var paddle_width = 512 #idk
 
+onready var upgrade1Audio = get_node("upgrade1Player")
+onready var upgrade2Audio = get_node("upgrade2Player")
+onready var upgrade3Audio = get_node("upgrade3Player")
+onready var startAudio = get_node("startPlayer")
+onready var stuckAudio = get_node("stuckPlayer")
+onready var unstuckAudio = get_node("unstuckPlayer")
+
 const BALL = preload("res://scenes/entities/Ball.tscn")
 const STARTBALL = preload("res://scenes/entities/StartBall.tscn")
 
@@ -61,6 +68,9 @@ func start():
 	if !started:
 		started = true
 		ballsInPlay = 1
+		if settings.sound_enabled:
+			startAudio.volume_db = settings.sound_level - 50
+			startAudio.play()
 	for child in self.get_children():
 		if child.is_in_group("Stuck"):
 			var newBall = BALL.instance()
@@ -72,6 +82,9 @@ func start():
 			newBall.apply_central_impulse(Vector2(get_parent().active_speed * 2 * (newBall.position.x - self.position.x)/paddle_width,0))
 			child.call_deferred("queue_free")
 			self.get_parent().add_child(newBall)
+			if settings.sound_enabled:
+				unstuckAudio.volume_db = settings.sound_level - 50
+				unstuckAudio.play()
 	for child in get_parent().get_children():
 		if child.is_in_group("Ball"):
 			child.blast()
@@ -88,6 +101,9 @@ func newLife():
 	self.get_node("Sprite").modulate = get_color
 
 func newBall(ball):
+	if settings.sound_enabled:
+		stuckAudio.volume_db = settings.sound_level - 50
+		stuckAudio.play()
 	var newBall = STARTBALL.instance()
 	newBall.position.x = ball.global_position.x - self.global_position.x
 	newBall.position.y = -64
@@ -97,6 +113,9 @@ func newBall(ball):
 
 func upgrade(upgrade = 1):
 	if upgrade == 1:
+		if settings.sound_enabled:
+			upgrade1Audio.volume_db = settings.sound_level - 50
+			upgrade1Audio.play()
 		for child in get_parent().get_children():
 			if child.is_in_group("Ball"):
 				var newBall = BALL.instance()
@@ -119,9 +138,15 @@ func upgrade(upgrade = 1):
 				self.add_child(newBall)
 				ballsInPlay += 1
 	elif upgrade == 2:
+		if settings.sound_enabled:
+			upgrade2Audio.volume_db = settings.sound_level - 50
+			upgrade2Audio.play()
 		self.isSticky = true
 		self.get_node("Sprite").modulate = Color(0,1,0,1)
 	elif upgrade == 3:
+		if settings.sound_enabled:
+			upgrade3Audio.volume_db = settings.sound_level - 50
+			upgrade3Audio.play()
 		self.laser = true
 		for child in get_parent().get_children():
 			if child.is_in_group("Ball"):

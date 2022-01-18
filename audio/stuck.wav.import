@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/stuck.wav-47c1f1b228a4d3d0e92370c7f396671a.sample"
+
+[deps]
+
+source_file="res://audio/stuck.wav"
+dest_files=[ "res://.import/stuck.wav-47c1f1b228a4d3d0e92370c7f396671a.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

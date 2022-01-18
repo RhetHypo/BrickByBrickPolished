@@ -96,6 +96,7 @@ func blast():
 		newBullet.global_position = blaster.get_node("Blaster/SpawnPoint").global_position
 		var angle = blaster.rotation_degrees
 		newBullet.rotation_degrees = angle
+		newBullet.origin = self
 		newBullet.apply_central_impulse(Vector2(cos(deg2rad(angle)), sin(deg2rad(angle))) * 2000)
 		return
 
