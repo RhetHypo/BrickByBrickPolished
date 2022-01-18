@@ -17,7 +17,7 @@ _global_script_class_icons={
 
 config/name="BrickByBrick"
 run/main_scene="res://scenes/menus/MainTitle.tscn"
-config/icon="res://icon.png"
+config/icon="res://images/NewIcon.png"
 
 [autoload]
 
