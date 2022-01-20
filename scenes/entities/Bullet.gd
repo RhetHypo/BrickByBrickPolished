@@ -17,7 +17,7 @@ func _ready():
 func _on_Bullet_body_entered(body):
 	if body.is_in_group("Brick"):
 		body.get_parent().brick_break(self.position)
-		if settings.sound_enabled and is_instance_valid(origin):
+		if settings.sound_enabled and is_instance_valid(origin) and "breakAudio" in origin:
 			origin.breakAudio.volume_db = settings.sound_level - 50
 			origin.breakAudio.play()
 			self.call_deferred("queue_free")

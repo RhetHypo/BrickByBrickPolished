@@ -18,7 +18,7 @@ func brick_break(hit):
 		elif powtype == 3 and !get_parent().paddle.laser:
 			powerup.powerup_type = 3
 			powerup.get_node("Sprite").modulate = Color(0,1,1,1)
-		elif powtype == 4 and !get_parent().paddle.laser:
+		elif powtype == 4 and !get_parent().paddle.water:
 			powerup.powerup_type = 4
 			powerup.get_node("Sprite").modulate = Color(0,0,1,1)
 		else:

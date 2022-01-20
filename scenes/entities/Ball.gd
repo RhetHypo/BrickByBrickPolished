@@ -94,8 +94,10 @@ func unlock_water(state = true):
 	water = state
 	if state:
 		collision_mask = 2
+		get_node("Sprite").modulate = Color(0,0,.75,1)
 	else:
 		collision_mask = 1
+		get_node("Sprite").modulate = Color(0,0,0,1)
 
 func blast():
 	if just_released:

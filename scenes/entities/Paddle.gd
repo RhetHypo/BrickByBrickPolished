@@ -25,6 +25,7 @@ var get_color
 
 func _ready():
 	get_color = self.get_node("Sprite").modulate
+	self.upgrade(4)
 
 func _process(delta):
 	#var pos = 0
@@ -164,6 +165,7 @@ func upgrade(upgrade = 1):
 			if child.is_in_group("Stuck"):
 				child.laser = true
 				child.water = false
+				child.change_color()
 	elif upgrade == 4:
 		if settings.sound_enabled:
 			upgrade3Audio.volume_db = settings.sound_level - 50
@@ -177,3 +179,4 @@ func upgrade(upgrade = 1):
 			if child.is_in_group("Stuck"):
 				child.laser = false
 				child.water = true
+				child.change_color()
