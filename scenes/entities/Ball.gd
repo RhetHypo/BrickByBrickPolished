@@ -13,12 +13,14 @@ var combo = 0
 
 #these need to persist between bounces
 var laser = false
+var can_fire = true
 var temp_speed = 0
 
 onready var breakAudio = get_node("breakPlayer")
 onready var paddleAudio = get_node("paddlePlayer")
 onready var wallAudio = get_node("wallPlayer")
 onready var blaster = get_node("BlasterPivot")
+onready var fireTimer = get_node("fireTimer")
 
 const BULLET = preload("res://scenes/entities/Bullet.tscn")
 
@@ -53,7 +55,6 @@ func _on_Ball_body_entered(body):
 			self.temp_alive = true
 			body.newBall(self)
 			self.call_deferred("queue_free")
-			
 		self.apply_central_impulse(Vector2(current_speed * 2 * (self.position.x - body.position.x)/paddle_width,0))
 	elif body.is_in_group("Brick"):
 		if settings.sound_enabled:
@@ -90,7 +91,9 @@ func blast():
 	if just_released:
 		just_released = false
 		return
-	elif laser:
+	elif laser and can_fire == true:
+		can_fire = false
+		fireTimer.start()
 		var newBullet = BULLET.instance()
 		get_parent().add_child(newBullet)
 		newBullet.global_position = blaster.get_node("Blaster/SpawnPoint").global_position
@@ -109,3 +112,6 @@ func death():
 
 func update_speed(speed):
 	current_speed = speed
+
+func _on_fireTimer_timeout():
+	can_fire = true

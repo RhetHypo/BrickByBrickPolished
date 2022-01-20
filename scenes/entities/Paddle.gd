@@ -29,8 +29,8 @@ func _process(delta):
 	#var pos = 0
 	if get_parent().transition == false:
 		if settings.control_scheme == 0:
-			if Input.is_action_just_pressed("click"):
-				self.start()
+			if Input.is_action_pressed("click"):
+				self.take_action()
 			#mouse
 			#pos = get_global_mouse_position().x
 			self.position.x = get_global_mouse_position().x
@@ -44,8 +44,8 @@ func _process(delta):
 				self.position.x -= speed * applied_turbo * delta
 			elif Input.is_action_pressed("D"):
 				self.position.x += speed * applied_turbo * delta
-			if Input.is_action_just_pressed("W"):
-				self.start()
+			if Input.is_action_pressed("W"):
+				self.take_action()
 		elif settings.control_scheme == 2:
 			#arrows
 			if Input.is_action_pressed("ui_down"):
@@ -56,8 +56,8 @@ func _process(delta):
 				self.position.x -= speed * applied_turbo * delta
 			elif Input.is_action_pressed("ui_right"):
 				self.position.x += speed * applied_turbo * delta
-			if Input.is_action_just_pressed("ui_up"):
-				self.start()
+			if Input.is_action_pressed("ui_up"):
+				self.take_action()
 		if(self.position.x <= 275):
 			self.position.x = 275
 		if(self.position.x >= 1760):
@@ -65,7 +65,7 @@ func _process(delta):
 		#if Input.is_action_just_pressed("upgrade_test"):
 		#	self.upgrade(1)
 
-func start():
+func take_action():
 	if !started:
 		started = true
 		ballsInPlay = 1
