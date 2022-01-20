@@ -125,13 +125,14 @@ func dropped_ball():
 
 func award_lives(newLives):
 	lives += newLives
-	update_lives(lives)
-	if newLives < 0 and lives >= 1:
+	if newLives < 0 and lives >= 0:
+		update_lives(lives)
 		if settings.sound_enabled:
 			deathAudio.volume_db = settings.sound_level - 50
 			deathAudio.play()
 		paddle.newLife()
-	elif lives <= 0:
+	elif lives < 0:
+		transition = true
 		globals.endgame = true
 		globals.endgame_score = points
 		globals.endgame_difficulty = settings.difficulty

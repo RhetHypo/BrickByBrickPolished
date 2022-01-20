@@ -58,3 +58,4 @@ func alt_title_anim():
 		yield(tween,"tween_completed")
 		child.rect_position.y = 1000
 		letter_array.remove(index)
+	get_node("otherMainTitle").visible = true

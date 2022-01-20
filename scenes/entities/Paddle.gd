@@ -10,6 +10,7 @@ var isSticky = false
 var laser = false
 var water = false
 var lava = false
+var slow_motion = true
 var paddle_width = 512 #idk
 
 onready var upgrade1Audio = get_node("upgrade1Player")
@@ -33,6 +34,8 @@ func _process(delta):
 		if settings.control_scheme == 0:
 			if Input.is_action_pressed("click"):
 				self.take_action()
+			else:
+				self.take_inaction()
 			#mouse
 			#pos = get_global_mouse_position().x
 			self.position.x = get_global_mouse_position().x
@@ -93,6 +96,11 @@ func take_action():
 	for child in get_parent().get_children():
 		if child.is_in_group("Ball"):
 			child.blast()
+	if slow_motion:
+		Engine.time_scale = 0.3
+
+func take_inaction():
+	Engine.time_scale = 1
 
 func newLife():
 	started = false
@@ -154,12 +162,20 @@ func upgrade(upgrade = 1):
 			upgrade2Audio.play()
 		self.isSticky = true
 		self.get_node("Sprite").modulate = Color(0,1,0,1)
-	elif upgrade == 3:
+	elif upgrade == 3: #laser
 		update_balls(1)
-	elif upgrade == 4:
+	elif upgrade == 4: #water
 		update_balls(2)
-	elif upgrade == 5:
+	elif upgrade == 5: #lava
 		update_balls(3)
+	elif upgrade == 6: #sniper
+		pass#TODO: implement sniper
+	elif upgrade == 7: #neopolitan
+		pass#TODO: implement neopolitan
+	elif upgrade == 8: #silver
+		pass#TODO: implement silver
+	elif upgrade == 9: #golden
+		pass#TODO: implement golden
 
 func update_balls(update_value):
 	if update_value == 1:#laser
