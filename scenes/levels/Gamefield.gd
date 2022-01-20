@@ -25,6 +25,7 @@ export var max_offset = Vector2(50,25)
 export var max_roll = 0.5
 
 var shaking = 0.0
+var transition = true
 var shake_amount = 0.25
 export var shapes = ["Grid", "RevTri", "CheckerSame", "Tri", "CheckerAlt"]
 var upgradeable_bricks = []
@@ -61,6 +62,8 @@ func _ready():
 	get_node("Transition").fade_in()
 	yield(get_node("Transition/TransitionTween"), "tween_completed")
 	get_node("Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer").visible = true
+	yield(levelTransition, "transition_complete")
+	transition = false
 
 func _unhandled_input(event):
 	if event.is_action_pressed("pause"):
@@ -149,9 +152,10 @@ func level_check():
 	for child in self.get_children():
 		if child.is_in_group("Brick") and child.get_node_or_null("Brick") != null:
 			complete = false
-	if complete:
+	if complete and transition == false:
 		level += 1
 		update_level(level)
+		levelTransition.next_level(level)
 		for child in self.get_children():
 			if child.is_in_group("Ball"):
 				child.call_deferred("queue_free")
@@ -168,8 +172,11 @@ func level_check():
 				child.call_deferred("queue_free")
 		paddle.newLife()
 		update_speed_label(active_speed)
-		levelTransition.next_level(level)
+		transition = true
+		yield(levelTransition,"field_hidden")
 		generate_bricks()
+		yield(levelTransition,"transition_complete")
+		transition = false
 		#TODO: Make this more dynamic, and progress through levels
 
 func award_points(newPoints):

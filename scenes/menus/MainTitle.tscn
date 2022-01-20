@@ -28,16 +28,16 @@ void fragment(){
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
 
-[sub_resource type="DynamicFont" id=10]
+[sub_resource type="DynamicFont" id=3]
 size = 128
 outline_size = 8
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=4]
 font_data = ExtResource( 3 )
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=5]
 length = 2.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("CenterContainer/ButtonGrid/NewGameButton:modulate")
@@ -88,7 +88,7 @@ tracks/3/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 
 [sub_resource type="DynamicFont" id=7]
 size = 32
@@ -132,98 +132,98 @@ margin_bottom = 67.0
 [node name="Label" type="Label" parent="TitleLetters/HBoxContainer"]
 margin_right = 49.0
 margin_bottom = 134.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 3 )
 text = "B"
 
 [node name="Label2" type="Label" parent="TitleLetters/HBoxContainer"]
 margin_left = 53.0
 margin_right = 102.0
 margin_bottom = 134.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 3 )
 text = "R"
 
 [node name="Label3" type="Label" parent="TitleLetters/HBoxContainer"]
 margin_left = 106.0
 margin_right = 133.0
 margin_bottom = 134.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 3 )
 text = "I"
 
 [node name="Label4" type="Label" parent="TitleLetters/HBoxContainer"]
 margin_left = 137.0
 margin_right = 186.0
 margin_bottom = 134.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 3 )
 text = "C"
 
 [node name="Label5" type="Label" parent="TitleLetters/HBoxContainer"]
 margin_left = 190.0
 margin_right = 239.0
 margin_bottom = 134.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 3 )
 text = "K"
 
 [node name="Label6" type="Label" parent="TitleLetters/HBoxContainer"]
 margin_left = 243.0
 margin_right = 270.0
 margin_bottom = 134.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 3 )
 text = " "
 
 [node name="Label7" type="Label" parent="TitleLetters/HBoxContainer"]
 margin_left = 274.0
 margin_right = 323.0
 margin_bottom = 134.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 3 )
 text = "B"
 
 [node name="Label8" type="Label" parent="TitleLetters/HBoxContainer"]
 margin_left = 327.0
 margin_right = 376.0
 margin_bottom = 134.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 3 )
 text = "Y"
 
 [node name="Label9" type="Label" parent="TitleLetters/HBoxContainer"]
 margin_left = 380.0
 margin_right = 407.0
 margin_bottom = 134.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 3 )
 text = " "
 
 [node name="Label10" type="Label" parent="TitleLetters/HBoxContainer"]
 margin_left = 411.0
 margin_right = 460.0
 margin_bottom = 134.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 3 )
 text = "B"
 
 [node name="Label11" type="Label" parent="TitleLetters/HBoxContainer"]
 margin_left = 464.0
 margin_right = 513.0
 margin_bottom = 134.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 3 )
 text = "R"
 
 [node name="Label12" type="Label" parent="TitleLetters/HBoxContainer"]
 margin_left = 517.0
 margin_right = 544.0
 margin_bottom = 134.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 3 )
 text = "I"
 
 [node name="Label13" type="Label" parent="TitleLetters/HBoxContainer"]
 margin_left = 548.0
 margin_right = 597.0
 margin_bottom = 134.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 3 )
 text = "C"
 
 [node name="Label14" type="Label" parent="TitleLetters/HBoxContainer"]
 margin_left = 601.0
 margin_right = 650.0
 margin_bottom = 134.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 3 )
 text = "K"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
@@ -231,12 +231,12 @@ margin_left = 20.0
 margin_top = 20.0
 margin_right = 20.0
 margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 3 )
+custom_fonts/normal_font = SubResource( 4 )
 text = "The quick brown fox jumps over the lazy dog"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Buttons = SubResource( 4 )
-anims/Title = SubResource( 5 )
+anims/Buttons = SubResource( 5 )
+anims/Title = SubResource( 6 )
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 editor/display_folded = true
