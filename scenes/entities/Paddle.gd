@@ -8,6 +8,7 @@ var turbo = 2
 var ballsInPlay = 0
 var isSticky = false
 var laser = false
+var water = false
 var paddle_width = 512 #idk
 
 onready var upgrade1Audio = get_node("upgrade1Player")
@@ -78,7 +79,8 @@ func take_action():
 			newBall.global_position = child.global_position
 			newBall.current_speed = get_parent().active_speed
 			newBall.linear_velocity.y = -get_parent().active_speed
-			newBall.laser = self.laser
+			newBall.laser = child.laser
+			newBall.water = child.water
 			newBall.temp_speed = child.temp_speed
 			newBall.apply_central_impulse(Vector2(get_parent().active_speed * 2 * (newBall.position.x - self.position.x)/paddle_width,0))
 			child.call_deferred("queue_free")
@@ -109,10 +111,12 @@ func newBall(ball):
 	newBall.position.x = ball.global_position.x - self.global_position.x
 	newBall.position.y = -64
 	newBall.laser = ball.laser
+	newBall.water = ball.water
 	newBall.temp_speed = ball.temp_speed
 	self.add_child(newBall)
 
 func upgrade(upgrade = 1):
+	print(upgrade)
 	if upgrade == 1:
 		if settings.sound_enabled:
 			upgrade1Audio.volume_db = settings.sound_level - 50
@@ -121,6 +125,7 @@ func upgrade(upgrade = 1):
 			if child.is_in_group("Ball"):
 				var newBall = BALL.instance()
 				newBall.laser = child.laser
+				newBall.water = child.water
 				newBall.global_position = child.global_position
 				newBall.current_speed = child.current_speed
 				newBall.temp_speed = child.temp_speed
@@ -132,6 +137,7 @@ func upgrade(upgrade = 1):
 			if child.is_in_group("Stuck"):
 				var newBall = STARTBALL.instance()
 				newBall.laser = child.laser
+				newBall.water = child.water
 				newBall.temp_speed = child.temp_speed
 				newBall.position.x = child.position.x - 20
 				newBall.position.y = child.position.y
@@ -149,9 +155,25 @@ func upgrade(upgrade = 1):
 			upgrade3Audio.volume_db = settings.sound_level - 50
 			upgrade3Audio.play()
 		self.laser = true
+		self.water = false
 		for child in get_parent().get_children():
 			if child.is_in_group("Ball"):
-				child.unlock_laser()
+				child.set_type(1)
+				#child.unlock_laser()
 		for child in get_children():
 			if child.is_in_group("Stuck"):
 				child.laser = true
+				child.water = false
+	elif upgrade == 4:
+		if settings.sound_enabled:
+			upgrade3Audio.volume_db = settings.sound_level - 50
+			upgrade3Audio.play()
+		self.laser = false
+		self.water = true
+		for child in get_parent().get_children():
+			if child.is_in_group("Ball"):
+				child.set_type(2)
+		for child in get_children():
+			if child.is_in_group("Stuck"):
+				child.laser = false
+				child.water = true

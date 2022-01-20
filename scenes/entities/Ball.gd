@@ -13,6 +13,7 @@ var combo = 0
 
 #these need to persist between bounces
 var laser = false
+var water = false
 var can_fire = true
 var temp_speed = 0
 
@@ -27,6 +28,8 @@ const BULLET = preload("res://scenes/entities/Bullet.tscn")
 func _ready():
 	if laser:
 		unlock_laser()
+	elif water:
+		unlock_water()
 
 func _physics_process(delta):
 	blaster.rotation_degrees += delta * 360
@@ -56,7 +59,7 @@ func _on_Ball_body_entered(body):
 			body.newBall(self)
 			self.call_deferred("queue_free")
 		self.apply_central_impulse(Vector2(current_speed * 2 * (self.position.x - body.position.x)/paddle_width,0))
-	elif body.is_in_group("Brick"):
+	elif body.is_in_group("Brick") and !water:
 		if settings.sound_enabled:
 			breakAudio.volume_db = settings.sound_level - 50
 			breakAudio.pitch_scale = 1.5 + combo
@@ -83,9 +86,16 @@ func _on_Ball_body_entered(body):
 			wallAudio.pitch_scale = rand_range(1.5,3.0)
 			wallAudio.play()
 
-func unlock_laser():
-	laser = true
-	blaster.visible = true
+func unlock_laser(state = true):
+	laser = state
+	blaster.visible = state
+
+func unlock_water(state = true):
+	water = state
+	if state:
+		collision_mask = 2
+	else:
+		collision_mask = 1
 
 func blast():
 	if just_released:
@@ -115,3 +125,28 @@ func update_speed(speed):
 
 func _on_fireTimer_timeout():
 	can_fire = true
+
+func set_type(new_type = 1):
+	if new_type == 1: #laser
+		unlock_laser(true)
+		unlock_water(false)
+	elif new_type == 2: #water
+		unlock_laser(false)
+		unlock_water(true)
+	else:
+		unlock_laser(false)
+		unlock_water(false)
+
+func _on_Area2D_body_entered(body):
+	if body.is_in_group("Brick") and water:
+		if settings.sound_enabled:
+			breakAudio.volume_db = settings.sound_level - 50
+			breakAudio.pitch_scale = 1.5 + combo
+			combo += .10
+			if combo >= 5:
+				combo = 5
+			breakAudio.play()
+		temp_speed += ((settings.difficulty+1)*5)
+		if temp_speed > max_temp_speed:
+			temp_speed = max_temp_speed
+		body.get_parent().brick_break(self.position)

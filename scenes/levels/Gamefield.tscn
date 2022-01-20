@@ -55,7 +55,6 @@ texture = ExtResource( 2 )
 position = Vector2( 1024, 1064 )
 
 [node name="Walls" type="Node2D" parent="."]
-editor/display_folded = true
 __meta__ = {
 "_edit_group_": true
 }
