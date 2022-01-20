@@ -14,6 +14,7 @@ var combo = 0
 #these need to persist between bounces
 var laser = false
 var water = false
+var lava = false
 var can_fire = true
 var temp_speed = 0
 
@@ -24,12 +25,16 @@ onready var blaster = get_node("BlasterPivot")
 onready var fireTimer = get_node("fireTimer")
 
 const BULLET = preload("res://scenes/entities/Bullet.tscn")
+const SPARK = preload("res://scenes/entities/Spark.tscn")
 
 func _ready():
 	if laser:
 		unlock_laser()
 	elif water:
 		unlock_water()
+	elif lava:
+		unlock_lava()
+	change_color()
 
 func _physics_process(delta):
 	blaster.rotation_degrees += delta * 360
@@ -48,6 +53,8 @@ func _integrate_forces(state):
 			state.linear_velocity.y = sqrt(pow(current_speed+temp_speed,2) * 0.25)
 
 func _on_Ball_body_entered(body):
+	if lava:
+		create_spark()
 	if body.is_in_group("Paddle"):
 		if settings.sound_enabled:
 			paddleAudio.volume_db = settings.sound_level - 50
@@ -99,6 +106,17 @@ func unlock_water(state = true):
 		collision_mask = 1
 		get_node("Sprite").modulate = Color(0,0,0,1)
 
+func unlock_lava(state = true):
+	lava = state
+
+func change_color():
+	if water:
+		get_node("Sprite").modulate = Color(0,0,.75,1)
+	elif lava:
+		get_node("Sprite").modulate = Color(1,0,0,1)
+	else:
+		get_node("Sprite").modulate = Color(0,0,0,1)
+
 func blast():
 	if just_released:
 		just_released = false
@@ -113,7 +131,16 @@ func blast():
 		newBullet.rotation_degrees = angle
 		newBullet.origin = self
 		newBullet.apply_central_impulse(Vector2(cos(deg2rad(angle)), sin(deg2rad(angle))) * 2000)
-		return
+
+func create_spark():
+	for i in range(0,3):
+		var newSpark = SPARK.instance()
+		get_parent().add_child(newSpark)
+		newSpark.global_position = self.global_position
+		var angle = rand_range(0,360)
+		newSpark.rotation_degrees = angle
+		newSpark.origin = self
+		newSpark.apply_central_impulse(Vector2(cos(deg2rad(angle)), sin(deg2rad(angle))) * 1000)
 
 func death():
 	#TODO: Add check for if this is the last ball in play, if adding multiple balls
@@ -132,12 +159,20 @@ func set_type(new_type = 1):
 	if new_type == 1: #laser
 		unlock_laser(true)
 		unlock_water(false)
+		unlock_lava(false)
 	elif new_type == 2: #water
 		unlock_laser(false)
 		unlock_water(true)
+		unlock_lava(false)
+	elif new_type == 3: #lava
+		unlock_laser(false)
+		unlock_water(false)
+		unlock_lava(true)
 	else:
 		unlock_laser(false)
 		unlock_water(false)
+		unlock_lava(false)
+	change_color()
 
 func _on_Area2D_body_entered(body):
 	if body.is_in_group("Brick") and water:

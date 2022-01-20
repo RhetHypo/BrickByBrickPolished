@@ -9,6 +9,7 @@ var ballsInPlay = 0
 var isSticky = false
 var laser = false
 var water = false
+var lava = false
 var paddle_width = 512 #idk
 
 onready var upgrade1Audio = get_node("upgrade1Player")
@@ -25,7 +26,6 @@ var get_color
 
 func _ready():
 	get_color = self.get_node("Sprite").modulate
-	self.upgrade(4)
 
 func _process(delta):
 	#var pos = 0
@@ -82,6 +82,7 @@ func take_action():
 			newBall.linear_velocity.y = -get_parent().active_speed
 			newBall.laser = child.laser
 			newBall.water = child.water
+			newBall.lava = child.lava
 			newBall.temp_speed = child.temp_speed
 			newBall.apply_central_impulse(Vector2(get_parent().active_speed * 2 * (newBall.position.x - self.position.x)/paddle_width,0))
 			child.call_deferred("queue_free")
@@ -113,11 +114,11 @@ func newBall(ball):
 	newBall.position.y = -64
 	newBall.laser = ball.laser
 	newBall.water = ball.water
+	newBall.lava = ball.lava
 	newBall.temp_speed = ball.temp_speed
 	self.add_child(newBall)
 
 func upgrade(upgrade = 1):
-	print(upgrade)
 	if upgrade == 1:
 		if settings.sound_enabled:
 			upgrade1Audio.volume_db = settings.sound_level - 50
@@ -127,6 +128,7 @@ func upgrade(upgrade = 1):
 				var newBall = BALL.instance()
 				newBall.laser = child.laser
 				newBall.water = child.water
+				newBall.lava = child.lava
 				newBall.global_position = child.global_position
 				newBall.current_speed = child.current_speed
 				newBall.temp_speed = child.temp_speed
@@ -139,6 +141,7 @@ func upgrade(upgrade = 1):
 				var newBall = STARTBALL.instance()
 				newBall.laser = child.laser
 				newBall.water = child.water
+				newBall.lava = child.lava
 				newBall.temp_speed = child.temp_speed
 				newBall.position.x = child.position.x - 20
 				newBall.position.y = child.position.y
@@ -152,31 +155,35 @@ func upgrade(upgrade = 1):
 		self.isSticky = true
 		self.get_node("Sprite").modulate = Color(0,1,0,1)
 	elif upgrade == 3:
-		if settings.sound_enabled:
-			upgrade3Audio.volume_db = settings.sound_level - 50
-			upgrade3Audio.play()
+		update_balls(1)
+	elif upgrade == 4:
+		update_balls(2)
+	elif upgrade == 5:
+		update_balls(3)
+
+func update_balls(update_value):
+	if update_value == 1:#laser
 		self.laser = true
 		self.water = false
-		for child in get_parent().get_children():
-			if child.is_in_group("Ball"):
-				child.set_type(1)
-				#child.unlock_laser()
-		for child in get_children():
-			if child.is_in_group("Stuck"):
-				child.laser = true
-				child.water = false
-				child.change_color()
-	elif upgrade == 4:
-		if settings.sound_enabled:
-			upgrade3Audio.volume_db = settings.sound_level - 50
-			upgrade3Audio.play()
+		self.lava = false
+	elif update_value == 2:#water
 		self.laser = false
 		self.water = true
-		for child in get_parent().get_children():
-			if child.is_in_group("Ball"):
-				child.set_type(2)
-		for child in get_children():
-			if child.is_in_group("Stuck"):
-				child.laser = false
-				child.water = true
-				child.change_color()
+		self.lava = false
+	elif update_value == 3:#lava
+		self.laser = false
+		self.water = false
+		self.lava = true
+	if settings.sound_enabled:
+		upgrade3Audio.volume_db = settings.sound_level - 50
+		upgrade3Audio.play()
+	for child in get_parent().get_children():
+		if child.is_in_group("Ball"):
+			child.set_type(update_value)
+	for child in get_children():
+		if child.is_in_group("Stuck"):
+			child.laser = self.laser
+			child.water = self.water
+			child.lava = self.lava
+			child.change_color()
+	

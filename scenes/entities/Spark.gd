@@ -11,7 +11,7 @@ func _ready():
 		fireAudio.volume_db = settings.sound_level - 50
 		fireAudio.play()
 
-func _on_Bullet_body_entered(body):
+func _on_Spark_body_entered(body):
 	if body.is_in_group("Brick"):
 		body.get_parent().brick_break(self.position)
 		if settings.sound_enabled and is_instance_valid(origin) and "breakAudio" in origin:
@@ -24,4 +24,4 @@ func _on_Bullet_body_entered(body):
 		self.call_deferred("queue_free")
 
 func _on_lifetime_timeout():
-	self.call_deferred("queue_free")
+	call_deferred("queue_free")

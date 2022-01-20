@@ -9,8 +9,8 @@ func _ready():
 	random.randomize()
 
 func brick_break(hit):
-	var powtype = (randi() % 4) + 1
-	if self.is_in_group("Powerup"):
+	var powtype = (randi() % 5) + 1
+	if self.is_in_group("Powerup"):#TODO: Revist the odds on this so it doesn't sink to multi ball
 		var powerup = POWERUP.instance()
 		if powtype == 2 and !get_parent().paddle.isSticky:
 			powerup.powerup_type = 2
@@ -21,6 +21,9 @@ func brick_break(hit):
 		elif powtype == 4 and !get_parent().paddle.water:
 			powerup.powerup_type = 4
 			powerup.get_node("Sprite").modulate = Color(0,0,1,1)
+		elif powtype == 5 and !get_parent().paddle.lava:
+			powerup.powerup_type = 5
+			powerup.get_node("Sprite").modulate = Color(1,0,0,1)
 		else:
 			powerup.powerup_type = 1
 			powerup.get_node("Sprite").modulate = Color(1,1,1,1)
