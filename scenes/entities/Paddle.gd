@@ -153,12 +153,12 @@ func newBall(ball):
 	self.add_child(newBall)
 
 func upgrade(upgrade = 1):
-	if settings.sound_enabled:
-		upgrade1Audio.volume_db = settings.sound_level - 50
-		upgrade1Audio.play()
 	if upgrade == 1:
+		if settings.sound_enabled:
+			upgrade1Audio.volume_db = settings.sound_level - 50
+			upgrade1Audio.play()
 		for child in get_parent().get_children():
-			if child.is_in_group("Ball"):
+			if child.is_in_group("Ball") and ballsInPlay < 8:
 				var newBall = BALL.instance()
 				newBall.laser = child.laser
 				newBall.water = child.water
@@ -182,7 +182,11 @@ func upgrade(upgrade = 1):
 				child.position.x += 20
 				self.add_child(newBall)
 				ballsInPlay += 1
-	elif upgrade == 2: #laser
+	else:
+		if settings.sound_enabled:
+			upgrade3Audio.volume_db = settings.sound_level - 50
+			upgrade3Audio.play()
+	if upgrade == 2: #laser
 		update_balls(1)
 	elif upgrade == 3: #water
 		update_balls(2)
@@ -215,9 +219,6 @@ func update_balls(update_value):
 		self.laser = false
 		self.water = false
 		self.lava = true
-	if settings.sound_enabled:
-		upgrade3Audio.volume_db = settings.sound_level - 50
-		upgrade3Audio.play()
 	for child in get_parent().get_children():
 		if child.is_in_group("Ball"):
 			child.set_type(update_value)
