@@ -1,14 +1,16 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/entities/Paddle.gd" type="Script" id=1]
 [ext_resource path="res://images/paddle.png" type="Texture" id=2]
 [ext_resource path="res://scenes/entities/StartBall.tscn" type="PackedScene" id=3]
-[ext_resource path="res://audio/pop.wav" type="AudioStream" id=4]
-[ext_resource path="res://audio/splat.wav" type="AudioStream" id=5]
-[ext_resource path="res://audio/laser.wav" type="AudioStream" id=6]
-[ext_resource path="res://audio/release.wav" type="AudioStream" id=7]
-[ext_resource path="res://audio/stuck.wav" type="AudioStream" id=8]
-[ext_resource path="res://audio/unstuck.wav" type="AudioStream" id=9]
+[ext_resource path="res://images/ball.png" type="Texture" id=4]
+[ext_resource path="res://images/time.png" type="Texture" id=5]
+[ext_resource path="res://audio/pop.wav" type="AudioStream" id=6]
+[ext_resource path="res://audio/splat.wav" type="AudioStream" id=7]
+[ext_resource path="res://audio/laser.wav" type="AudioStream" id=8]
+[ext_resource path="res://audio/release.wav" type="AudioStream" id=9]
+[ext_resource path="res://audio/stuck.wav" type="AudioStream" id=10]
+[ext_resource path="res://audio/unstuck.wav" type="AudioStream" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 255, 30 )
@@ -22,12 +24,9 @@ extents = Vector2( 257.365, 31.15 )
 collision_layer = 3
 collision_mask = 3
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="Sprite" type="Sprite" parent="."]
-modulate = Color( 0.258824, 0.258824, 0.258824, 1 )
+modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -42,21 +41,32 @@ shape = SubResource( 2 )
 
 [node name="StartBall" parent="." instance=ExtResource( 3 )]
 
+[node name="TimeLeft" type="TextureProgress" parent="."]
+visible = false
+margin_left = -32.0
+margin_top = -32.0
+margin_right = 32.0
+margin_bottom = 32.0
+max_value = 1000.0
+texture_under = ExtResource( 4 )
+texture_progress = ExtResource( 5 )
+fill_mode = 4
+
 [node name="upgrade1Player" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 4 )
+stream = ExtResource( 6 )
 
 [node name="upgrade2Player" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 5 )
+stream = ExtResource( 7 )
 pitch_scale = 2.0
 
 [node name="upgrade3Player" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 6 )
-
-[node name="startPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 7 )
-
-[node name="stuckPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
 
-[node name="unstuckPlayer" type="AudioStreamPlayer" parent="."]
+[node name="startPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )
+
+[node name="stuckPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+
+[node name="unstuckPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )

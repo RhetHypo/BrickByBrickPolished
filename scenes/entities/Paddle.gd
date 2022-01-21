@@ -7,11 +7,14 @@ var applied_turbo = non_turbo
 var turbo = 2
 var ballsInPlay = 0
 var isSticky = false
+var isNeo = false
+var isSilver = false
+var isGold = false
 var laser = false
 var water = false
 var lava = false
-var slow_motion = true
 var paddle_width = 512 #idk
+var burnout = false
 
 onready var upgrade1Audio = get_node("upgrade1Player")
 onready var upgrade2Audio = get_node("upgrade2Player")
@@ -19,6 +22,10 @@ onready var upgrade3Audio = get_node("upgrade3Player")
 onready var startAudio = get_node("startPlayer")
 onready var stuckAudio = get_node("stuckPlayer")
 onready var unstuckAudio = get_node("unstuckPlayer")
+onready var timeLeft = get_node("TimeLeft")
+
+var paddle_tex = preload("res://images/paddle.png")
+var neo_tex = preload("res://images/neoPaddle.png")
 
 const BALL = preload("res://scenes/entities/Ball.tscn")
 const STARTBALL = preload("res://scenes/entities/StartBall.tscn")
@@ -27,15 +34,18 @@ var get_color
 
 func _ready():
 	get_color = self.get_node("Sprite").modulate
+	timeLeft.value = 0
 
 func _process(delta):
 	#var pos = 0
 	if get_parent().transition == false:
 		if settings.control_scheme == 0:
 			if Input.is_action_pressed("click"):
-				self.take_action()
+				self.take_action(delta)
 			else:
-				self.take_inaction()
+				self.take_inaction(delta)
+			if Input.is_action_pressed("right_click"):
+				self.take_alt_action()
 			#mouse
 			#pos = get_global_mouse_position().x
 			self.position.x = get_global_mouse_position().x
@@ -50,7 +60,11 @@ func _process(delta):
 			elif Input.is_action_pressed("D"):
 				self.position.x += speed * applied_turbo * delta
 			if Input.is_action_pressed("W"):
-				self.take_action()
+				self.take_action(delta)
+			else:
+				self.take_inaction(delta)
+			if Input.is_action_pressed("spacebar"):
+				self.take_alt_action()
 		elif settings.control_scheme == 2:
 			#arrows
 			if Input.is_action_pressed("ui_down"):
@@ -62,7 +76,11 @@ func _process(delta):
 			elif Input.is_action_pressed("ui_right"):
 				self.position.x += speed * applied_turbo * delta
 			if Input.is_action_pressed("ui_up"):
-				self.take_action()
+				self.take_action(delta)
+			else:
+				self.take_inaction(delta)
+			if Input.is_action_pressed("spacebar"):
+				self.take_alt_action()
 		if(self.position.x <= 275):
 			self.position.x = 275
 		if(self.position.x >= 1760):
@@ -70,7 +88,7 @@ func _process(delta):
 		#if Input.is_action_just_pressed("upgrade_test"):
 		#	self.upgrade(1)
 
-func take_action():
+func take_action(delta):
 	if !started:
 		started = true
 		ballsInPlay = 1
@@ -93,14 +111,24 @@ func take_action():
 			if settings.sound_enabled:
 				unstuckAudio.volume_db = settings.sound_level - 50
 				unstuckAudio.play()
+	if isSilver and !burnout:
+		Engine.time_scale = 0.25
+		timeLeft.value -= 1000 * delta
+		if timeLeft.value <= 0:
+			burnout = true
+	else:
+		take_inaction(delta)
+
+func take_inaction(delta):
+	Engine.time_scale = 1
+	timeLeft.value += 200 * delta
+	if timeLeft.value >= timeLeft.max_value:
+		burnout = false
+
+func take_alt_action():
 	for child in get_parent().get_children():
 		if child.is_in_group("Ball"):
 			child.blast()
-	if slow_motion:
-		Engine.time_scale = 0.3
-
-func take_inaction():
-	Engine.time_scale = 1
 
 func newLife():
 	started = false
@@ -109,9 +137,7 @@ func newLife():
 	newBall.position = Vector2(0,-64)
 	self.add_child(newBall)
 	ballsInPlay = 0
-	self.isSticky = false
-	self.laser = false
-	self.get_node("Sprite").modulate = get_color
+	update_paddle(-1)
 
 func newBall(ball):
 	if settings.sound_enabled:
@@ -127,10 +153,10 @@ func newBall(ball):
 	self.add_child(newBall)
 
 func upgrade(upgrade = 1):
+	if settings.sound_enabled:
+		upgrade1Audio.volume_db = settings.sound_level - 50
+		upgrade1Audio.play()
 	if upgrade == 1:
-		if settings.sound_enabled:
-			upgrade1Audio.volume_db = settings.sound_level - 50
-			upgrade1Audio.play()
 		for child in get_parent().get_children():
 			if child.is_in_group("Ball"):
 				var newBall = BALL.instance()
@@ -156,26 +182,25 @@ func upgrade(upgrade = 1):
 				child.position.x += 20
 				self.add_child(newBall)
 				ballsInPlay += 1
-	elif upgrade == 2:
-		if settings.sound_enabled:
-			upgrade2Audio.volume_db = settings.sound_level - 50
-			upgrade2Audio.play()
-		self.isSticky = true
-		self.get_node("Sprite").modulate = Color(0,1,0,1)
-	elif upgrade == 3: #laser
+	elif upgrade == 2: #laser
 		update_balls(1)
-	elif upgrade == 4: #water
+	elif upgrade == 3: #water
 		update_balls(2)
-	elif upgrade == 5: #lava
+	elif upgrade == 4: #lava
 		update_balls(3)
-	elif upgrade == 6: #sniper
-		pass#TODO: implement sniper
-	elif upgrade == 7: #neopolitan
-		pass#TODO: implement neopolitan
-	elif upgrade == 8: #silver
-		pass#TODO: implement silver
-	elif upgrade == 9: #golden
-		pass#TODO: implement golden
+	elif upgrade == 5:#sticky
+#		if settings.sound_enabled:
+#			upgrade2Audio.volume_db = settings.sound_level - 50
+#			upgrade2Audio.play()
+		update_paddle(1)
+#	elif upgrade == 6: #sniper
+#		pass#TODO: implement sniper
+	elif upgrade == 6: #neopolitan
+		update_paddle(2)
+	elif upgrade == 7: #silver
+		update_paddle(3)
+	elif upgrade == 8: #golden
+		update_paddle(4)
 
 func update_balls(update_value):
 	if update_value == 1:#laser
@@ -202,4 +227,47 @@ func update_balls(update_value):
 			child.water = self.water
 			child.lava = self.lava
 			child.change_color()
+
+func update_paddle(update_value):
+	var paddle_sprite = self.get_node("Sprite")
+	if update_value == 1:#sticky
+		self.isSticky = true
+		self.isNeo = false
+		self.isSilver = false
+		self.isGold = false
+		paddle_sprite.texture = paddle_tex
+		paddle_sprite.modulate = Color(0,1,0,1)
+		timeLeft.visible = false
+	elif update_value == 2:#neo
+		self.isSticky = false
+		self.isNeo = true
+		self.isSilver = false
+		self.isGold = false
+		paddle_sprite.texture = neo_tex
+		paddle_sprite.modulate = Color(1,1,1,1)
+		timeLeft.visible = false
+	elif update_value == 3:#silver
+		self.isSticky = false
+		self.isNeo = false
+		self.isSilver = true
+		self.isGold = false
+		paddle_sprite.texture = paddle_tex
+		paddle_sprite.modulate = Color(.7,.7,.7,1)
+		timeLeft.visible = true
+	elif update_value == 4:#golden
+		self.isSticky = false
+		self.isNeo = false
+		self.isSilver = false
+		self.isGold = true
+		paddle_sprite.texture = paddle_tex
+		paddle_sprite.modulate = Color(1,1,0,1)
+		timeLeft.visible = false
+	else:
+		self.isSticky = false
+		self.isNeo = false
+		self.isSilver = false
+		self.isGold = false
+		paddle_sprite.texture = paddle_tex
+		paddle_sprite.modulate = Color(0,0,0,1)
+		timeLeft.visible = false
 	

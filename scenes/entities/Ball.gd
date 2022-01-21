@@ -65,7 +65,15 @@ func _on_Ball_body_entered(body):
 			self.temp_alive = true
 			body.newBall(self)
 			self.call_deferred("queue_free")
-		self.apply_central_impulse(Vector2(current_speed * 2 * (self.position.x - body.position.x)/paddle_width,0))
+		
+		if body.isNeo:
+			print(self.position.x - body.position.x, " / ", paddle_width)
+			if self.position.x - body.position.x < -86:
+				self.apply_central_impulse(Vector2(current_speed * 2 * (-256)/paddle_width,0))
+			elif self.position.x - body.position.x > 86:
+				self.apply_central_impulse(Vector2(current_speed * 2 * (256)/paddle_width,0))
+		else:
+			self.apply_central_impulse(Vector2(current_speed * 2 * (self.position.x - body.position.x)/paddle_width,0))
 	elif body.is_in_group("Brick") and !water:
 		if settings.sound_enabled:
 			breakAudio.volume_db = settings.sound_level - 50

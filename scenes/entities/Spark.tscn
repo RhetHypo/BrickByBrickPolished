@@ -7,7 +7,9 @@
 
 [sub_resource type="CircleShape2D" id=1]
 
-[node name="Spark" type="RigidBody2D"]
+[node name="Spark" type="RigidBody2D" groups=[
+"Spark",
+]]
 collision_layer = 0
 gravity_scale = 0.0
 contacts_reported = 1

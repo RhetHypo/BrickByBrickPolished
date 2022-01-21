@@ -124,7 +124,10 @@ func dropped_ball():
 	paddle.ballsInPlay -= 1
 
 func award_lives(newLives):
-	lives += newLives
+	if paddle.isGold and newLives < 0:
+		paddle.update_paddle(-1)
+	else:
+		lives += newLives
 	if newLives < 0 and lives >= 0:
 		update_lives(lives)
 		if settings.sound_enabled:
@@ -164,6 +167,8 @@ func level_check():
 			if child.is_in_group("Bullet"):
 				child.call_deferred("queue_free")
 			if child.is_in_group("Powerup"):
+				child.call_deferred("queue_free")
+			if child.is_in_group("Spark"):
 				child.call_deferred("queue_free")
 		active_speed = def_speed + (level * def_speed/(15-settings.difficulty*4))
 		if active_speed > max_speed:

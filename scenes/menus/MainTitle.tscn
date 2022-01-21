@@ -34,17 +34,17 @@ outline_size = 8
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=9]
+[sub_resource type="DynamicFont" id=4]
 size = 128
 outline_size = 8
 outline_color = Color( 0, 0, 0, 1 )
 extra_spacing_char = 4
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=5]
 font_data = ExtResource( 3 )
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 length = 2.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("CenterContainer/ButtonGrid/NewGameButton:modulate")
@@ -95,13 +95,13 @@ tracks/3/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=7]
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=8]
 size = 32
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=9]
 size = 20
 font_data = ExtResource( 11 )
 
@@ -243,7 +243,7 @@ margin_left = -325.0
 margin_top = -67.0
 margin_right = 331.5
 margin_bottom = 67.0
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 4 )
 text = "BRICK BY BRICK"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
@@ -251,12 +251,12 @@ margin_left = 20.0
 margin_top = 20.0
 margin_right = 20.0
 margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 4 )
+custom_fonts/normal_font = SubResource( 5 )
 text = "The quick brown fox jumps over the lazy dog"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Buttons = SubResource( 5 )
-anims/Title = SubResource( 6 )
+anims/Buttons = SubResource( 6 )
+anims/Title = SubResource( 7 )
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 editor/display_folded = true
@@ -285,7 +285,7 @@ texture_disabled = ExtResource( 7 )
 [node name="Label" type="Label" parent="CenterContainer/ButtonGrid/NewGameButton"]
 margin_right = 128.0
 margin_bottom = 64.0
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "NEW GAME"
 align = 1
@@ -304,7 +304,7 @@ texture_disabled = ExtResource( 7 )
 [node name="Label" type="Label" parent="CenterContainer/ButtonGrid/SettingsButton"]
 margin_right = 128.0
 margin_bottom = 64.0
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "SETTINGS"
 align = 1
@@ -323,7 +323,7 @@ texture_disabled = ExtResource( 7 )
 [node name="Label" type="Label" parent="CenterContainer/ButtonGrid/HighscoresButton"]
 margin_right = 128.0
 margin_bottom = 64.0
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "HIGHSCORES"
 align = 1
@@ -343,7 +343,7 @@ texture_disabled = ExtResource( 7 )
 [node name="Label" type="Label" parent="CenterContainer/ButtonGrid/Quit"]
 margin_right = 128.0
 margin_bottom = 65.0
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "QUIT"
 align = 1
@@ -368,7 +368,7 @@ margin_left = 13.0
 margin_top = 577.0
 margin_right = 1010.0
 margin_bottom = 591.0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Music: Local Forecast - Elevator, Killing Time, and Cipher by Kevin MacLeod. Free fonts from DaFont. Rest is by RhetHypo."
 align = 1
