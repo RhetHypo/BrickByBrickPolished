@@ -78,11 +78,11 @@ func generate_bricks():
 	var thread_error
 	thread = Thread.new()
 	if generate_mode == 1:
-		thread_error = thread.start(self, "generate_brick_area")
-		#generate_brick_area()
+		#thread_error = thread.start(self, "generate_brick_area")
+		generate_brick_area()
 	elif generate_mode == 2:
-		thread_error = thread.start(self, "generate_brick_list", (globals.levels[(level - 1) % len(globals.levels)]))
-		#generate_brick_list((globals.levels[(level - 1) % len(globals.levels)]))
+		#thread_error = thread.start(self, "generate_brick_list", [(globals.levels[(level - 1) % len(globals.levels)]),(level-1)/len(globals.levels)])
+		generate_brick_list([(globals.levels[(level - 1) % len(globals.levels)]),(level-1)/len(globals.levels)])
 	elif generate_mode == 3:
 		thread_error = thread.start(self, "generate_brick_shapes", (shapes[(level - 1) % len(shapes)]))
 		#generate_brick_shapes((shapes[(level - 1) % len(shapes)]))
@@ -107,12 +107,18 @@ func generate_brick_area(area = def_area):
 			self.add_child_below_node(life,newBrick)
 			newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
 			newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
-	add_upgrades()
+	self.call_deferred("add_upgrades")
 
-func generate_brick_list(bricks = def_bricks):
+func generate_brick_list(params):
+	var bricks = params[0]
+	var durability_increase = params[1]
+	print(durability_increase)
 	for brick in bricks:
-		self.call_deferred("new_brick",brick[1],brick[2],brick[0])
-	#add_upgrades()
+		var actual_dura = brick[0]
+		if brick[0] != -1:
+			actual_dura += durability_increase
+		self.call_deferred("new_brick",brick[1],brick[2],actual_dura)
+	self.call_deferred("add_upgrades")
 
 func dropped_ball():
 	if paddle.ballsInPlay == 1:
@@ -123,6 +129,16 @@ func dropped_ball():
 func award_lives(newLives):
 	if paddle.isGold and newLives < 0:
 		paddle.update_paddle(-1)
+		for child in self.get_children():
+			if child.is_in_group("Ball"):
+				child.call_deferred("queue_free")
+				#child.update_speed(active_speed)
+			if child.is_in_group("Bullet"):
+				child.call_deferred("queue_free")
+			if child.is_in_group("Powerup"):
+				child.call_deferred("queue_free")
+			if child.is_in_group("Spark"):
+				child.call_deferred("queue_free")
 	else:
 		lives += newLives
 	if newLives < 0 and lives >= 0:
@@ -170,7 +186,7 @@ func level_check():
 				child.call_deferred("queue_free")
 			if child.is_in_group("Brick"):
 				child.call_deferred("queue_free")
-		active_speed = def_speed + (level * def_speed/(15-settings.difficulty*4))
+		active_speed = def_speed + (level * def_speed/(15-settings.difficulty*2))
 		if active_speed > max_speed:
 			active_speed = max_speed
 		for child in paddle.get_children():
@@ -183,15 +199,20 @@ func level_check():
 		generate_bricks()
 		yield(levelTransition,"transition_complete")
 		transition = false
-		#TODO: Make this more dynamic, and progress through levels
+		update_lives()
 
 func award_points(newPoints):
 	points += newPoints
 	update_points(points, newPoints)
 
-func update_lives(newLives):
+func update_lives(newLives = lives):
 	var lives = get_node("Camera2D/CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Lives")
 	lives.text = "Lives = " + str(newLives)
+	if get_node("Paddle").isGold:
+		lives.text += " + 1"
+		lives.add_color_override("font_color", Color(1,1,0,1))
+	else:
+		lives.add_color_override("font_color", Color(0,0,0,1))
 
 func update_points(points, newPoints):
 	
@@ -295,8 +316,10 @@ func new_brick(x, y, durability):
 func add_upgrades():
 	var total_upgrades = (4 - settings.difficulty) * 2
 	for i in range(0,total_upgrades):
+		if upgradeable_bricks.size() == 0:
+			break
 		var select_brick = rand_range(0,upgradeable_bricks.size())
-		upgradeable_bricks[select_brick].add_to_group("Powerup")
+		upgradeable_bricks[select_brick].add_to_group("PowerupBrick")
 	upgradeable_bricks.clear()
 
 func _on_Life_body_exited(body):

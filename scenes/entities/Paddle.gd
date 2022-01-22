@@ -205,6 +205,7 @@ func upgrade(upgrade = 1):
 		update_paddle(3)
 	elif upgrade == 8: #golden
 		update_paddle(4)
+	get_parent().update_lives()
 
 func update_balls(update_value):
 	if update_value == 1:#laser

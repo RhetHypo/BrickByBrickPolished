@@ -50,6 +50,7 @@ func new_brick(x, y):
 	var newBrick = PHANTOM.instance()
 	newBrick.get_node("Brick/Label").text = str(x) + ", " + str(y)
 	newBrick.coords = Vector2(x,y)
+	newBrick.durability = 0
 	bricks.add_child(newBrick)
 	newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
 	newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset

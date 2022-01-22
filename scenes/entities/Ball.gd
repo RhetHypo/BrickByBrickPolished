@@ -73,17 +73,23 @@ func _on_Ball_body_entered(body):
 		else:
 			self.apply_central_impulse(Vector2(current_speed * 2 * (self.position.x - body.position.x)/paddle_width,0))
 	elif body.is_in_group("Brick") and !water:
-		if settings.sound_enabled:
-			breakAudio.volume_db = settings.sound_level - 50
-			breakAudio.pitch_scale = 1.5 + combo
+		if body.get_parent().durability != -1:
+			if settings.sound_enabled:
+				breakAudio.volume_db = settings.sound_level - 50
+				breakAudio.pitch_scale = 1.5 + combo
 			combo += .10
 			if combo >= 5:
 				combo = 5
 			breakAudio.play()
-		temp_speed += ((settings.difficulty+1)*5)
-		if temp_speed > max_temp_speed:
-			temp_speed = max_temp_speed
-		body.get_parent().brick_break(self.position)
+			temp_speed += ((settings.difficulty+1))#with brick durability, this goes up FAST
+			if temp_speed > max_temp_speed:
+				temp_speed = max_temp_speed
+			body.get_parent().brick_break(self.position)
+		else:
+			if settings.sound_enabled:
+				wallAudio.volume_db = settings.sound_level - 50
+				wallAudio.pitch_scale = rand_range(1.5,3.0)
+				wallAudio.play()
 #		var parent = body.get_parent()
 #		var anim = parent.get_node("AnimationPlayer")
 #		body.call_deferred("queue_free")

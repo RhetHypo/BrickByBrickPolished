@@ -1,18 +1,17 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://images/brick.png" type="Texture" id=1]
-[ext_resource path="res://other/long_shot/Long_Shot.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://other/american_captain/American Captain.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 64, 32 )
 
 [sub_resource type="DynamicFont" id=2]
-size = 32
+size = 48
 font_data = ExtResource( 2 )
 
 [node name="Brick" type="StaticBody2D" groups=[
 "Brick",
-"Powerup1",
 ]]
 position = Vector2( 1020.96, 146.776 )
 
@@ -24,14 +23,13 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Label" type="Label" parent="."]
-visible = false
 margin_left = -48.0
 margin_top = -19.0
 margin_right = 49.0
 margin_bottom = 19.0
 custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "a"
+text = "0"
 align = 1
 valign = 1
 

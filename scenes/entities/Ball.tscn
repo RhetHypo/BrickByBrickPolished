@@ -13,10 +13,10 @@
 friction = 0.0
 bounce = 500.0
 
-[sub_resource type="Curve" id=3]
+[sub_resource type="Curve" id=2]
 _data = [ Vector2( 0.453924, 93.84 ), 0.0, 0.0, 0, 0, Vector2( 0.684303, 153.9 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CircleShape2D" id=2]
+[sub_resource type="CircleShape2D" id=3]
 radius = 32.0894
 
 [sub_resource type="CircleShape2D" id=4]
@@ -51,10 +51,10 @@ emission_shape = 1
 emission_sphere_radius = 3.0
 gravity = Vector2( 0, 0 )
 scale_amount_curve = ExtResource( 4 )
-anim_speed_curve = SubResource( 3 )
+anim_speed_curve = SubResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="breakPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )

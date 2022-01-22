@@ -59,3 +59,7 @@ func alt_title_anim():
 		child.rect_position.y = 1000
 		letter_array.remove(index)
 	get_node("otherMainTitle").visible = true
+
+
+func _on_Powerups_pressed():
+	get_node("Camera2D/CanvasLayer/PowerupDialog").popup_centered()

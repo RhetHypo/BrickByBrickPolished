@@ -18,7 +18,7 @@ func brick_break(hit):
 		durability -= 1
 		update_color()
 	elif durability == 0:
-		if self.is_in_group("Powerup"):
+		if self.is_in_group("PowerupBrick"):
 			var powtype = 1
 			if settings.difficulty == 1:
 				powtype = random.randi_range(1,7)
@@ -31,7 +31,7 @@ func brick_break(hit):
 			else:
 				powtype = 1
 			#TEMP
-			powtype = 1
+			#powtype = 1
 			var powerup = POWERUP.instance()
 			if powtype == 2 and !get_parent().paddle.laser:
 				powerup.powerup_type = 2
@@ -77,4 +77,9 @@ func update_color():
 	if durability == -1:
 		self.modulate = settings.color_defs["BLACK"]
 	else:
-		self.modulate = settings.color_defs[settings.color_queue[durability]]
+		self.modulate = settings.color_defs[settings.color_queue[durability % len(settings.color_queue)]]
+		if durability/len(settings.color_queue) > 0:
+			self.get_node("Brick/Label").visible = true
+			self.get_node("Brick/Label").text = str(durability/len(settings.color_queue))
+		else:
+			self.get_node("Brick/Label").visible = false
