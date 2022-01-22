@@ -11,8 +11,8 @@ size = 32
 font_data = ExtResource( 2 )
 
 [node name="Brick" type="StaticBody2D" groups=[
-"Powerup1",
 "Brick",
+"Powerup1",
 ]]
 position = Vector2( 1020.96, 146.776 )
 

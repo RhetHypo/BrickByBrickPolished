@@ -9,9 +9,9 @@ var brick_offset = 10
 var left_offset = 1024
 var top_offset = 200
 
-var generate_mode = 3
+var generate_mode = 2
 var def_area = Vector2(6,9) #first is RADIUS for row length
-var def_bricks = [Vector2(1,1),Vector2(1,2),Vector2(2,2),Vector2(2,1)]
+var def_bricks = globals.levels
 var def_speed = 500
 var active_speed = 500
 var max_speed = 2000
@@ -81,8 +81,8 @@ func generate_bricks():
 		thread_error = thread.start(self, "generate_brick_area")
 		#generate_brick_area()
 	elif generate_mode == 2:
-		thread_error = thread.start(self, "generate_brick_list")
-		#generate_brick_list()
+		thread_error = thread.start(self, "generate_brick_list", (globals.levels[(level - 1) % len(globals.levels)]))
+		#generate_brick_list((globals.levels[(level - 1) % len(globals.levels)]))
 	elif generate_mode == 3:
 		thread_error = thread.start(self, "generate_brick_shapes", (shapes[(level - 1) % len(shapes)]))
 		#generate_brick_shapes((shapes[(level - 1) % len(shapes)]))
@@ -110,12 +110,9 @@ func generate_brick_area(area = def_area):
 	add_upgrades()
 
 func generate_brick_list(bricks = def_bricks):
-	var newBrick
 	for brick in bricks:
-		newBrick = BRICK.instance()
-		self.add_child(newBrick)
-		newBrick.global_position = brick
-	add_upgrades()
+		self.call_deferred("new_brick",brick[1],brick[2],brick[0])
+	#add_upgrades()
 
 func dropped_ball():
 	if paddle.ballsInPlay == 1:
@@ -154,8 +151,9 @@ func level_check():
 			update_speed_label(child.linear_velocity.length())
 	var complete = true
 	for child in self.get_children():
-		if child.is_in_group("Brick") and child.get_node_or_null("Brick") != null:
+		if child.is_in_group("Brick") and child.get_node_or_null("Brick") != null and child.durability != -1:
 			complete = false
+			break
 	if complete and transition == false:
 		level += 1
 		update_level(level)
@@ -169,6 +167,8 @@ func level_check():
 			if child.is_in_group("Powerup"):
 				child.call_deferred("queue_free")
 			if child.is_in_group("Spark"):
+				child.call_deferred("queue_free")
+			if child.is_in_group("Brick"):
 				child.call_deferred("queue_free")
 		active_speed = def_speed + (level * def_speed/(15-settings.difficulty*4))
 		if active_speed > max_speed:
@@ -280,15 +280,17 @@ func generate_brick_shapes(shape, area = def_area):
 					#new_brick(x,y)
 	self.call_deferred("add_upgrades")
 
-func new_brick(x, y):
+func new_brick(x, y, durability):
 	var newBrick = PHANTOM.instance()
 	newBrick.get_node("Brick/Label").text = str(x) + ", " + str(y)
+	newBrick.coords = Vector2(x,y)
+	newBrick.durability = durability
 	upgradeable_bricks.append(newBrick)
 	self.add_child_below_node(life,newBrick)
 	newBrick.global_position.x = x * (brick_width + brick_offset) + left_offset
 	newBrick.global_position.y = y * (brick_height + brick_offset) + top_offset
-	newBrick.get_node("AnimationPlayer").play("create")
-	yield(newBrick.get_node("AnimationPlayer"),"animation_finished")
+	#newBrick.get_node("AnimationPlayer").play("create")
+	#yield(newBrick.get_node("AnimationPlayer"),"animation_finished")
 
 func add_upgrades():
 	var total_upgrades = (4 - settings.difficulty) * 2

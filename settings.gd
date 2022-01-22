@@ -10,6 +10,9 @@ var difficulty = 0
 var settings_file = "user://settings.save"
 var expected_vars = 7
 
+var color_defs = {"WHITE": Color(1,1,1,1), "RED": Color(1,0,0,1), "BLUE": Color(0,0,1,1), "YELLOW": Color(1,1,0,1), "GREEN": Color(0,1,0,1), "MAGENTA": Color(1,0,1,1), "VIOLET": Color(.7,0,.7,1), "ORANGE": Color(1,.5,.1,1), "BLACK": Color(0,0,0,1)}
+var color_queue = ["WHITE", "BLUE", "MAGENTA", "RED", "ORANGE", "YELLOW", "GREEN"]
+
 func _ready():
 	pass
 

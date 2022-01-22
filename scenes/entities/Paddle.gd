@@ -171,7 +171,7 @@ func upgrade(upgrade = 1):
 				self.get_parent().add_child(newBall)
 				ballsInPlay += 1
 		for child in get_children():
-			if child.is_in_group("Stuck"):
+			if child.is_in_group("Stuck") and ballsInPlay < 8:
 				var newBall = STARTBALL.instance()
 				newBall.laser = child.laser
 				newBall.water = child.water
